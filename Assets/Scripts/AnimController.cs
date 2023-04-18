@@ -10,7 +10,8 @@ public class AnimController : MonoBehaviour
     private PlayableGraph playableGraph;
     [SerializeField]
     private AnimControllerParams animControllerParams;
-    public RootPlayableNode rootPlayableNode;
+    [SerializeField]
+    private RootPlayableNode rootPlayableNode;
 
     private void Start()
     {
@@ -20,6 +21,11 @@ public class AnimController : MonoBehaviour
         playableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
         animControllerParams.Init();
         SetSourcePlayable(rootPlayableNode.GetPlayable(playableGraph, animControllerParams));
+    }
+    
+    public void SetParam<T>(string paramName, T value)
+    {
+        animControllerParams.SetParam(paramName, value);
     }
 
     private void SetSourcePlayable(Playable playable)
