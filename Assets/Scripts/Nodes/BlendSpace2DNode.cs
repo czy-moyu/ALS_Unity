@@ -21,6 +21,10 @@ public class BlendSpace2DNode : PlayableNode
     [SerializeField]
     private Vector2 currentPos;
 
+    [SerializeField]
+    [Range(0, 10f)]
+    private float speed = 1f;
+
     private AnimationMixerPlayable animationMixerPlayable;
     
     public override Playable GetPlayable(PlayableGraph playableGraph, AnimControllerParams animControllerParams)
@@ -42,6 +46,8 @@ public class BlendSpace2DNode : PlayableNode
         
         UpdateWeight(animControllerParams);
 
+        animationMixerPlayable.SetSpeed(speed);
+        
         return animationMixerPlayable;
     }
 
@@ -62,9 +68,10 @@ public class BlendSpace2DNode : PlayableNode
         animationMixerPlayable.SetInputWeight(3, weightRightTop);
     }
     
-    public override void UpdatePlayable(PlayableGraph playableGraph, AnimControllerParams animControllerParams)
+    public override void UpdatePlayable(float delta, PlayableGraph playableGraph, AnimControllerParams animControllerParams)
     {
         UpdateWeight(animControllerParams);
+        animationMixerPlayable.SetSpeed(speed);
     }
 }
 

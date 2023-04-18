@@ -10,13 +10,23 @@ public class AnimClipNode : PlayableNode
     [SerializeField]
     private AnimationClip _clip;
     
-    public override Playable GetPlayable(PlayableGraph playableGraph, AnimControllerParams animControllerParams)
+    [SerializeField]
+    [Range(0, 10f)]
+    private float speed = 1f;
+
+    private AnimationClipPlayable animationClipPlayable;
+    
+    public override Playable GetPlayable(PlayableGraph playableGraph, 
+        AnimControllerParams animControllerParams)
     {
-        return AnimationClipPlayable.Create(playableGraph, _clip);
+        animationClipPlayable = AnimationClipPlayable.Create(playableGraph, _clip);
+        animationClipPlayable.SetSpeed(speed);
+        return animationClipPlayable;
     }
 
-    public override void UpdatePlayable(PlayableGraph playableGraph, AnimControllerParams animControllerParams)
+    public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
+        AnimControllerParams animControllerParams)
     {
-        
+        animationClipPlayable.SetSpeed(speed);
     }
 }

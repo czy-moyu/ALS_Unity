@@ -1108,7 +1108,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4216448992448256640}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1646,6 +1646,7 @@ GameObject:
   - component: {fileID: 6870409748502577722}
   - component: {fileID: 700509404039829568}
   - component: {fileID: 6400213473629693399}
+  - component: {fileID: 622396271}
   m_Layer: 0
   m_Name: AnimMan
   m_TagString: Untagged
@@ -1702,8 +1703,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8763506dca1db348b7dda324429fc8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip: {fileID: 8993902097722301239, guid: 6832ee17094b45d47b082e3cb8f4ca64, type: 3}
+  animControllerParams:
+    floatParams:
+    - name: Blend
+      value: 0
   rootPlayableNode: {fileID: 11400000, guid: 7797b00f36b8d6e45abebef154edc13d, type: 2}
+--- !u!114 &622396271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6058267216507361408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15053cf11d8826749a34ca07b4650534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6078241002349224009
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,7 +1936,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6940074205009151274}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

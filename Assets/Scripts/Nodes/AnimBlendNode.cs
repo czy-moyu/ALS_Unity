@@ -55,10 +55,11 @@ public class AnimBlendNode : PlayableNode
         }
     }
 
-    public override void UpdatePlayable(PlayableGraph playableGraph, AnimControllerParams animControllerParams)
+    public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
+        AnimControllerParams animControllerParams)
     {
-        input1.UpdatePlayable(playableGraph, animControllerParams);
-        input2.UpdatePlayable(playableGraph, animControllerParams);
+        input1.UpdatePlayable(delta, playableGraph, animControllerParams);
+        input2.UpdatePlayable(delta, playableGraph, animControllerParams);
         // Debug.Log("AnimBlendNode Update " + alpha);
 
         UpdateWeight(animControllerParams);

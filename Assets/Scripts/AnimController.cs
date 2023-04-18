@@ -37,7 +37,7 @@ public class AnimController : MonoBehaviour
     
     private void Update()
     {
-        rootPlayableNode.UpdatePlayable(playableGraph, animControllerParams);
+        rootPlayableNode.UpdatePlayable(Time.deltaTime, playableGraph, animControllerParams);
         
         // 播放动画
         playableGraph.Evaluate(Time.deltaTime);

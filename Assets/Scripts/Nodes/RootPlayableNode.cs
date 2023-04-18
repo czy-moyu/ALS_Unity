@@ -14,8 +14,9 @@ public class RootPlayableNode : PlayableNode
         return inputNode.GetPlayable(playableGraph, animControllerParams);
     }
 
-    public override void UpdatePlayable(PlayableGraph playableGraph, AnimControllerParams animControllerParams)
+    public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
+        AnimControllerParams animControllerParams)
     {
-        inputNode.UpdatePlayable(playableGraph, animControllerParams);
+        inputNode.UpdatePlayable(delta, playableGraph, animControllerParams);
     }
 }

@@ -9,6 +9,6 @@ public abstract class PlayableNode : ScriptableObject
     public abstract Playable GetPlayable(PlayableGraph playableGraph, 
         AnimControllerParams animControllerParams);
 
-    public abstract void UpdatePlayable(PlayableGraph playableGraph,
+    public abstract void UpdatePlayable(float delta, PlayableGraph playableGraph,
         AnimControllerParams animControllerParams);
 }
