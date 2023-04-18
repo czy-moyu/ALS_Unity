@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fc598ab6fefff469dacc4db58a0173, type: 3}
+  m_Name: BlendSpace2D
+  m_EditorClassIdentifier: 
+  blendSpacePointLeftBottom:
+    position: {x: 0, y: 0}
+    clip: {fileID: 8993902097722301239, guid: f971d0ff2056c8f48bb2a3c52a50d25c, type: 3}
+  blendSpacePointRightBottom:
+    position: {x: 1, y: 0}
+    clip: {fileID: 8993902097722301239, guid: 5594c9f639b265948a271e52c1ba9d85, type: 3}
+  blendSpacePointLeftTop:
+    position: {x: 0, y: 1}
+    clip: {fileID: 8993902097722301239, guid: aedb3f3ef3164ba4d8338722404c599a, type: 3}
+  blendSpacePointRightTop:
+    position: {x: 1, y: 1}
+    clip: {fileID: 8993902097722301239, guid: 6832ee17094b45d47b082e3cb8f4ca64, type: 3}
+  currentPos: {x: 0, y: 0}
