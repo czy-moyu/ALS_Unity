@@ -9,7 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7c18af3e7471fb41b1a1a97773e08cc, type: 3}
-  m_Name: Root
+  m_Script: {fileID: 11500000, guid: 1e70c89b164e44d49ad10a76a95a53d8, type: 3}
+  m_Name: ModifyBoneNode
   m_EditorClassIdentifier: 
-  inputNode: {fileID: 11400000, guid: e59da8e1c602b514c94354d7844bd215, type: 2}
+  inputNode: {fileID: 11400000, guid: b3cc47b0d85127947b877d0b8cee8c4c, type: 2}
+  boneNames:
+  - head
+  blendSpace: 0
+  positionOffset: {x: 0, y: 0, z: 0}

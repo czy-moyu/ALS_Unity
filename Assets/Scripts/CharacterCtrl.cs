@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class CharacterController : MonoBehaviour
+public class CharacterCtrl : MonoBehaviour
 {
     
 }

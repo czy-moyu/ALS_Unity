@@ -27,7 +27,7 @@ public class BlendSpace2DNode : PlayableNode
 
     private AnimationMixerPlayable animationMixerPlayable;
     
-    public override Playable GetPlayable(PlayableGraph playableGraph, AnimControllerParams animControllerParams)
+    public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)
     {
         animationMixerPlayable = AnimationMixerPlayable.Create(playableGraph, 4);
         AnimationClipPlayable leftBottomClip = AnimationClipPlayable.Create(
@@ -44,14 +44,14 @@ public class BlendSpace2DNode : PlayableNode
         playableGraph.Connect(leftTopClip, 0, animationMixerPlayable, 2);
         playableGraph.Connect(rightTopClip, 0, animationMixerPlayable, 3);
         
-        UpdateWeight(animControllerParams);
+        UpdateWeight(animController);
 
         animationMixerPlayable.SetSpeed(speed);
         
         return animationMixerPlayable;
     }
 
-    private void UpdateWeight(AnimControllerParams animControllerParams)
+    private void UpdateWeight(AnimController animController)
     {
         //假设输入参数（x，y）位于0到1之间
         float x = Mathf.Clamp01(currentPos.x);
@@ -68,9 +68,10 @@ public class BlendSpace2DNode : PlayableNode
         animationMixerPlayable.SetInputWeight(3, weightRightTop);
     }
     
-    public override void UpdatePlayable(float delta, PlayableGraph playableGraph, AnimControllerParams animControllerParams)
+    public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
+        AnimController animController)
     {
-        UpdateWeight(animControllerParams);
+        UpdateWeight(animController);
         animationMixerPlayable.SetSpeed(speed);
     }
 }

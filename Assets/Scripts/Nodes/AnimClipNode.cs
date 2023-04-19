@@ -17,7 +17,7 @@ public class AnimClipNode : PlayableNode
     private AnimationClipPlayable animationClipPlayable;
     
     public override Playable GetPlayable(PlayableGraph playableGraph, 
-        AnimControllerParams animControllerParams)
+        AnimController animController)
     {
         animationClipPlayable = AnimationClipPlayable.Create(playableGraph, _clip);
         animationClipPlayable.SetSpeed(speed);
@@ -25,8 +25,9 @@ public class AnimClipNode : PlayableNode
     }
 
     public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
-        AnimControllerParams animControllerParams)
+        AnimController animController)
     {
         animationClipPlayable.SetSpeed(speed);
     }
 }
+

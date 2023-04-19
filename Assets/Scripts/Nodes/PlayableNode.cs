@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.PlayerLoop;
 
 public abstract class PlayableNode : ScriptableObject
 {
-    public abstract Playable GetPlayable(PlayableGraph playableGraph, 
-        AnimControllerParams animControllerParams);
+    public abstract Playable GetPlayable(PlayableGraph playableGraph, AnimController animController);
 
     public abstract void UpdatePlayable(float delta, PlayableGraph playableGraph,
-        AnimControllerParams animControllerParams);
+        AnimController animController);
 }

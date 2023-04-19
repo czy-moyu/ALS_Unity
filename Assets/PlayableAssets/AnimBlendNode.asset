@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a9db6437c5e0f4693bed6239763df8, type: 3}
+  m_Name: AnimBlendNode
+  m_EditorClassIdentifier: 
+  input1: {fileID: 11400000, guid: fdf4e96f14e47bd428c33c138cc2e59d, type: 2}
+  input2: {fileID: 11400000, guid: fbbead1577a17174c88fbf73d9e8cff8, type: 2}
+  isBindParam: 0
+  paramName: 
+  alpha: 0

@@ -52,4 +52,4 @@ public class AnimControllerParamsPair<T> : IParamsPair
     public T value;
 }
 
-interface IParamsPair {};
+internal interface IParamsPair {};

@@ -9,14 +9,14 @@ public class RootPlayableNode : PlayableNode
     [SerializeField]
     private PlayableNode inputNode;
     
-    public override Playable GetPlayable(PlayableGraph playableGraph, AnimControllerParams animControllerParams)
+    public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)
     {
-        return inputNode.GetPlayable(playableGraph, animControllerParams);
+        return inputNode.GetPlayable(playableGraph, animController);
     }
 
     public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
-        AnimControllerParams animControllerParams)
+        AnimController animController)
     {
-        inputNode.UpdatePlayable(delta, playableGraph, animControllerParams);
+        inputNode.UpdatePlayable(delta, playableGraph, animController);
     }
 }
