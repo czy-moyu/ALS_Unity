@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graphPosition:
     serializedVersion: 2
-    x: 256.8
-    y: 361.6
-    width: 164.80002
+    x: 494.40002
+    y: 315.2
+    width: 186.39996
     height: 76.79999
   _clip: {fileID: 8993902097722301239, guid: aedb3f3ef3164ba4d8338722404c599a, type: 3}
   speed: 1

@@ -5,6 +5,9 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// show a read-only property in inspector
+/// </summary>
 [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
 public class ReadOnlyDrawer : PropertyDrawer
 {
@@ -21,6 +24,9 @@ public class ReadOnlyDrawer : PropertyDrawer
     }
 }
 
+/// <summary>
+/// this attribute is used to bind a node to a specific type
+/// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 public class BindAnimNode : Attribute
 {

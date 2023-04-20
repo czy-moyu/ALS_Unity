@@ -55,6 +55,18 @@ public class NodeGraphView : GraphView
         RegisterCallback<KeyDownEvent>(OnKeyDown);
     }
     
+    private void CenterNodeInView(GraphView container, GraphElement node)
+    {
+        // Vector2 graphViewCenter = new Vector2(layout.width / 2, layout.height / 2);
+        // Vector2 nodeCenter = node.GetPosition().center;
+        //
+        // // 计算需要移动的距离以将节点置于视图中心
+        // Vector2 translation = graphViewCenter - nodeCenter;
+        //
+        // // 设置viewTransform属性的平移组件以移动视图
+        // viewTransform.position = translation;
+    }
+    
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         
@@ -94,6 +106,13 @@ public class NodeGraphView : GraphView
                 INodeView nodeView = (INodeView)constructorInfo.Invoke(constructorParameters);
                 _nodeViews.Add(nodeView);
                 AddElement((GraphElement)nodeView);
+
+                if (nodeView is RootNodeView rootNodeView)
+                {
+                    // 将节点定位到GraphView的中心
+                    CenterNodeInView(this, rootNodeView);
+                }
+                
                 List<PlayableNode> playableInputNodes = nodeView.GetPlayableInputNodes();
                 
                 for (int index = 0; index < playableInputNodes.Count; index++)

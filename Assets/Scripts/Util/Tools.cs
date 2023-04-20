@@ -4,7 +4,11 @@ public class ReadOnlyAttribute : PropertyAttribute
 {
 }
 
-public class PlayableInputAttribute : PropertyAttribute
+public class BaseInputAttribute : PropertyAttribute
+{
+}
+
+public class PlayableInputAttribute : BaseInputAttribute
 {
 }
 

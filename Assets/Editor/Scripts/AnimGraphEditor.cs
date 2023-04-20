@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using GBG.AnimationGraph.Editor.ViewElement;
 using UnityEditor;
 using UnityEditor.Callbacks;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -12,6 +14,7 @@ public class AnimGraphEditor : EditorWindow
 {
     private AnimGraph _graphAsset;
     private NodeGraphView nodeGraphView;
+    private TripleSplitterRowView tripleSplitterRowView;
     
     [OnOpenAsset]
     public static bool OpenGraphAsset(int instanceId, int line)
@@ -61,8 +64,8 @@ public class AnimGraphEditor : EditorWindow
         AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
         AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
         
-        AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
-        AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
+        // AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
+        // AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
     }
 
     private void OnBeforeAssemblyReload()
@@ -81,18 +84,26 @@ public class AnimGraphEditor : EditorWindow
     {
         _graphAsset = animGraphAsset;
         CreateToolBar();
-        CreateNodeGraphView();
+        tripleSplitterRowView = new TripleSplitterRowView(
+            new Vector2(200, 400), new Vector2(200, 400));
+        rootVisualElement.Add(tripleSplitterRowView);
+        CreateNodeGraphView(tripleSplitterRowView.MiddlePane);
+    }
+    
+    public TripleSplitterRowView GetTripleSplitterRowView()
+    {
+        return tripleSplitterRowView;
     }
 
     private void CreateToolBar()
     {
-        var root = rootVisualElement;
+        VisualElement root = rootVisualElement;
         
         StyleSheet styleSheet = Resources.Load<StyleSheet>("CustomEditorStyles");
         Assert.IsNotNull(styleSheet);
 
         // Create the toolbar
-        var toolbar = new Toolbar();
+        Toolbar toolbar = new Toolbar();
         toolbar.styleSheets.Add(styleSheet);
 
         // Create the buttons for the toolbar
@@ -117,12 +128,12 @@ public class AnimGraphEditor : EditorWindow
         return button;
     }
 
-    private void CreateNodeGraphView()
+    private void CreateNodeGraphView(VisualElement root)
     {
         nodeGraphView = new(this)
         {
             style = { flexGrow = 1}
         };
-        rootVisualElement.Add(nodeGraphView);
+        root.Add(nodeGraphView);
     }
 }
