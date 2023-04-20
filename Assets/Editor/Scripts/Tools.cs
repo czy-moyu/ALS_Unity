@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
 
@@ -70,5 +71,25 @@ public static class Tools
         }
 
         return fieldsWithAttribute;
+    }
+    
+    public static Task WaitUntil(Func<bool> condition)
+    {
+        return Task.Run(() =>
+        {
+            while (!condition())
+            {
+            }
+        });
+    }
+    
+    public static bool IsVector3NaN(Vector3 vector)
+    {
+        return float.IsNaN(vector.x) || float.IsNaN(vector.y) || float.IsNaN(vector.z);
+    }
+    
+    public static Task Delay(float seconds)
+    {
+        return Task.Delay(TimeSpan.FromSeconds(seconds));
     }
 }

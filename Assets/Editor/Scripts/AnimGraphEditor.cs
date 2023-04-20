@@ -68,6 +68,15 @@ public class AnimGraphEditor : EditorWindow
         // AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
     }
 
+    private void ConstructGraphView()
+    {
+        CreateToolBar();
+        tripleSplitterRowView = new TripleSplitterRowView(
+            new Vector2(200, 400), new Vector2(200, 400));
+        rootVisualElement.Add(tripleSplitterRowView);
+        CreateNodeGraphView(tripleSplitterRowView.MiddlePane);
+    }
+
     private void OnBeforeAssemblyReload()
     {
         Assert.IsNotNull(nodeGraphView);
@@ -83,11 +92,7 @@ public class AnimGraphEditor : EditorWindow
     private void OpenGraphAsset(AnimGraph animGraphAsset)
     {
         _graphAsset = animGraphAsset;
-        CreateToolBar();
-        tripleSplitterRowView = new TripleSplitterRowView(
-            new Vector2(200, 400), new Vector2(200, 400));
-        rootVisualElement.Add(tripleSplitterRowView);
-        CreateNodeGraphView(tripleSplitterRowView.MiddlePane);
+        ConstructGraphView();
     }
     
     public TripleSplitterRowView GetTripleSplitterRowView()

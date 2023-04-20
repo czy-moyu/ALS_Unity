@@ -91,7 +91,12 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     {
         return inputPorts[index];
     }
-    
+
+    public PlayableNode GetPlayableNode()
+    {
+        return _node;
+    }
+
     public List<PlayableNode> GetPlayableInputNodes()
     {
         List<PlayableNode> inputNodes = new();
@@ -150,4 +155,6 @@ public interface INodeView
     Port GetOutputPort();
     
     Port GetInputPort(int index);
+    
+    PlayableNode GetPlayableNode();
 }

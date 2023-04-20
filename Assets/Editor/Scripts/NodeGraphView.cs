@@ -1,27 +1,31 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UIElements;
+using Edge = UnityEditor.Experimental.GraphView.Edge;
+using MouseButton = UnityEngine.UIElements.MouseButton;
 
 public class NodeGraphView : GraphView
 {
     private readonly AnimGraphEditor _editor;
     private readonly List<INodeView> _nodeViews = new();
-    
+
     public NodeGraphView(AnimGraphEditor editor)
     {
         _editor = editor;
-        
+
         // 设置节点拖拽
         SelectionDragger dragger = new()
         {
             // 不允许拖出边缘
             clampToParentEdges = true
         };
-        
+
         // 其他按键触发节点拖拽
         dragger.activators.Add(new ManipulatorActivationFilter()
         {
@@ -35,47 +39,46 @@ public class NodeGraphView : GraphView
 
         // 设置界面缩放
         SetupZoom(ContentZoomer.DefaultMinScale, 2);
-            
+
         // 设置创建节点回调
         // nodeCreationRequest += (info) =>
         // {
         //     AddElement(new RootNodeView());
         // };
-            
+
         // 添加界面移动
         this.AddManipulator(new ContentDragger());
         // 添加举行选择框
         this.AddManipulator(new RectangleSelector());
-            
+
         // 创建背景
         Insert(0, new GridBackground());
         
         CreateNodeFromAnimGraphResource();
-        
+
         RegisterCallback<KeyDownEvent>(OnKeyDown);
     }
-    
-    private void CenterNodeInView(GraphView container, GraphElement node)
+
+    private async void CenterNodeInView(INodeView node)
     {
-        // Vector2 graphViewCenter = new Vector2(layout.width / 2, layout.height / 2);
-        // Vector2 nodeCenter = node.GetPosition().center;
-        //
-        // // 计算需要移动的距离以将节点置于视图中心
-        // Vector2 translation = graphViewCenter - nodeCenter;
-        //
-        // // 设置viewTransform属性的平移组件以移动视图
-        // viewTransform.position = translation;
+        Vector2 graphViewCenter = new Vector2(viewport.layout.width / 2, viewport.layout.height / 2);
+        while (Tools.IsVector3NaN(graphViewCenter))
+        {
+            await Task.Delay(100);
+            graphViewCenter = new Vector2(viewport.layout.width / 2, viewport.layout.height / 2);
+        }
+        
+        viewTransform.position = -node.GetPlayableNode().GraphPosition.center + graphViewCenter;
     }
-    
+
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
-        
     }
 
     private void CreateNodeFromAnimGraphResource()
     {
         RootPlayableNode rootPlayableNode = _editor.GetGraphAsset().GetRootNode();
-        
+
         Dictionary<Type, Type> animNodeToEditorNode = new();
 
         List<Type> typesImplementingInterface = Tools.GetTypesImplementingInterface<INodeView>();
@@ -85,7 +88,7 @@ public class NodeGraphView : GraphView
                 .GetCustomAttribute(editorNodeType, typeof(BindAnimNode));
             animNodeToEditorNode.Add(myAttribute.type, editorNodeType);
         }
-        
+
         AddNode(rootPlayableNode, animNodeToEditorNode);
     }
 
@@ -101,7 +104,7 @@ public class NodeGraphView : GraphView
                 List<FieldInfo> fieldsWithCustomAttribute = Tools
                     .GetFieldsWithCustomAttribute<PlayableInputAttribute>(node.GetType());
                 // 创建构造函数的参数数组
-                object[] constructorParameters = { node, fieldsWithCustomAttribute.Count};
+                object[] constructorParameters = { node, fieldsWithCustomAttribute.Count };
                 // 使用反射调用构造函数并创建MyClass的实例
                 INodeView nodeView = (INodeView)constructorInfo.Invoke(constructorParameters);
                 _nodeViews.Add(nodeView);
@@ -110,11 +113,11 @@ public class NodeGraphView : GraphView
                 if (nodeView is RootNodeView rootNodeView)
                 {
                     // 将节点定位到GraphView的中心
-                    CenterNodeInView(this, rootNodeView);
+                    CenterNodeInView(rootNodeView);
                 }
-                
+
                 List<PlayableNode> playableInputNodes = nodeView.GetPlayableInputNodes();
-                
+
                 for (int index = 0; index < playableInputNodes.Count; index++)
                 {
                     PlayableNode playableNode = playableInputNodes[index];
@@ -140,7 +143,7 @@ public class NodeGraphView : GraphView
             return null;
         }
     }
-    
+
     public void ConnectNodes(INodeView inputNode, INodeView outputNode, int inputPortIndex)
     {
         // 创建一个新的边缘连接输出端口和输入端口
@@ -153,7 +156,7 @@ public class NodeGraphView : GraphView
         // 将边缘添加到图形视图的边缘集合中
         AddElement(edge);
     }
-    
+
     private void OnKeyDown(KeyDownEvent evt)
     {
         if (evt.ctrlKey && evt.keyCode == KeyCode.S)
