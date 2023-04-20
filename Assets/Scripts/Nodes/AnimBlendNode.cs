@@ -43,7 +43,7 @@ public class AnimBlendNode : PlayableNode
     {
         if (isBindParam)
         {
-            float weight = animController.GetParam<float>(paramName);
+            float weight = animController.GetAnimParam<float>(paramName);
             weight = Mathf.Clamp01(weight);
             animationMixerPlayable.SetInputWeight(0, 1 - weight);
             animationMixerPlayable.SetInputWeight(1, weight);

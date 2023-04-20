@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class AnimControllerParams
+public class AnimParams
 {
     [SerializeField]
     private List<AnimControllerParamsPair<float>> floatParams;

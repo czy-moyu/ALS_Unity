@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using GBG.AnimationGraph.Component;
 using UnityEngine;
 using UnityEngine.Animations;
-using UnityEngine.Experimental.Animations;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(Animator))]
@@ -14,11 +12,9 @@ public class AnimController : MonoBehaviour
     private Animator animator;
     private PlayableGraph playableGraph;
     private Skeleton _skeleton;
-    [SerializeField]
-    private AnimControllerParams animControllerParams;
     private Dictionary<string, float> curveParams = new();
     [SerializeField]
-    private RootPlayableNode rootPlayableNode;
+    private AnimGraph animGraph;
 
     private void Start()
     {
@@ -28,13 +24,13 @@ public class AnimController : MonoBehaviour
         _skeleton.GetOrAllocateBoneInfos();
         playableGraph = PlayableGraph.Create();
         playableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
-        animControllerParams.Init();
-        SetSourcePlayable(rootPlayableNode.GetPlayable(playableGraph, this));
+        animGraph.GetAnimParams().Init();
+        SetSourcePlayable(animGraph.GetRootNode().GetPlayable(playableGraph, this));
     }
     
-    public T GetParam<T>(string paramName)
+    public T GetAnimParam<T>(string paramName)
     {
-        return animControllerParams.GetParam<T>(paramName);
+        return animGraph.GetAnimParams().GetParam<T>(paramName);
     }
     
     public Skeleton GetSkeleton()
@@ -42,9 +38,9 @@ public class AnimController : MonoBehaviour
         return _skeleton;
     }
     
-    public void SetParam<T>(string paramName, T value)
+    public void SetAnimParam<T>(string paramName, T value)
     {
-        animControllerParams.SetParam(paramName, value);
+        animGraph.GetAnimParams().SetParam(paramName, value);
     }
 
     private void SetSourcePlayable(Playable playable)
@@ -57,7 +53,7 @@ public class AnimController : MonoBehaviour
     
     private void Update()
     {
-        rootPlayableNode.UpdatePlayable(Time.deltaTime, playableGraph, this);
+        animGraph.GetRootNode().UpdatePlayable(Time.deltaTime, playableGraph, this);
         
         // 播放动画
         playableGraph.Evaluate(Time.deltaTime);
