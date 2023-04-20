@@ -24,13 +24,14 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
-        evt.menu.AppendAction("Custom Action", MyCustomAction, DropdownMenuAction.AlwaysEnabled);
+        // Debug.Log($"evt target: {evt.target}");
+        evt.menu.AppendAction("Read Only", MyCustomAction, DropdownMenuAction.AlwaysEnabled);
     }
 
     private void MyCustomAction(DropdownMenuAction action)
     {
         // 在这里实现您的自定义操作
-        Debug.Log("My Custom Action executed!");
+        // Debug.Log("My Custom Action executed!");
     }
 
     protected void AddInputPort(int num)

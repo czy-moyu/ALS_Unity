@@ -16,7 +16,7 @@ public class NodeGraphView : GraphView
         _editor = editor;
         
         // 设置节点拖拽
-        SelectionDragger dragger = new SelectionDragger()
+        SelectionDragger dragger = new()
         {
             // 不允许拖出边缘
             clampToParentEdges = true
@@ -143,7 +143,7 @@ public class NodeGraphView : GraphView
         }
     }
 
-    private void SaveChanges()
+    public void SaveChanges()
     {
         SaveNodes();
     }

@@ -17,6 +17,6 @@ MonoBehaviour:
     x: 256.8
     y: 184
     width: 158.40002
-    height: 76.8
+    height: 76.80002
   _clip: {fileID: 8993902097722301239, guid: 6832ee17094b45d47b082e3cb8f4ca64, type: 3}
   speed: 1
