@@ -7,6 +7,7 @@ using UnityEngine.Playables;
 public class RootPlayableNode : PlayableNode
 {
     [SerializeField]
+    [PlayableInput]
     private PlayableNode inputNode;
     
     public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)

@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2228db4f1940b9e4bbd3d82a7a5eed09, type: 3}
   m_Name: Walk
   m_EditorClassIdentifier: 
+  graphPosition:
+    serializedVersion: 2
+    x: 256.8
+    y: 361.6
+    width: 164.80002
+    height: 76.80002
   _clip: {fileID: 8993902097722301239, guid: aedb3f3ef3164ba4d8338722404c599a, type: 3}
+  speed: 1

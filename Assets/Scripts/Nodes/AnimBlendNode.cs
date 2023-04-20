@@ -6,9 +6,11 @@ using UnityEngine.Playables;
 public class AnimBlendNode : PlayableNode
 {
     [SerializeField]
+    [PlayableInput]
     private PlayableNode input1;
     
     [SerializeField]
+    [PlayableInput]
     private PlayableNode input2;
 
     [SerializeField]

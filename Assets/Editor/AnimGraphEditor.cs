@@ -1,7 +1,9 @@
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class AnimGraphEditor : EditorWindow
 {
@@ -23,8 +25,9 @@ public class AnimGraphEditor : EditorWindow
                 {
                     editor.OpenGraphAsset(animGraphAsset);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Debug.LogError(e);
                     success = false;
                 }
             }

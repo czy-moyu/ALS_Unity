@@ -46,4 +46,23 @@ public static class Tools
             typeof(T).IsAssignableFrom(type)
         ).ToList();
     }
+    
+    public static List<FieldInfo> GetFieldsWithCustomAttribute<T>(Type objType) where T : Attribute
+    {
+        List<FieldInfo> fieldsWithAttribute = new();
+        // Type objType = obj.GetType();
+        FieldInfo[] fields = objType.GetFields(BindingFlags.Public 
+                                               | BindingFlags.Instance
+                                               | BindingFlags.NonPublic);
+
+        foreach (FieldInfo field in fields)
+        {
+            if (field.GetCustomAttribute(typeof(T)) != null)
+            {
+                fieldsWithAttribute.Add(field);
+            }
+        }
+
+        return fieldsWithAttribute;
+    }
 }

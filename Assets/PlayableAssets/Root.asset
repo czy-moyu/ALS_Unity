@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c18af3e7471fb41b1a1a97773e08cc, type: 3}
   m_Name: Root
   m_EditorClassIdentifier: 
+  graphPosition:
+    serializedVersion: 2
+    x: 902.4
+    y: 260.80002
+    width: 187.19995
+    height: 76.79999
   inputNode: {fileID: 11400000, guid: e59da8e1c602b514c94354d7844bd215, type: 2}

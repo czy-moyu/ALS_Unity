@@ -5,7 +5,7 @@ public abstract class PlayableNode : ScriptableObject
 {
     #if UNITY_EDITOR
     [SerializeField]
-    [HideInInspector]
+    [ReadOnly]
     private Rect graphPosition;
     
     public Rect GraphPosition
