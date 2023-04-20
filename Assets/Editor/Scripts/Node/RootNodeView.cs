@@ -5,8 +5,8 @@ using UnityEditor.Experimental.GraphView;
 public class RootNodeView : NodeView<RootPlayableNode>
 {
     // reflection call
-    public RootNodeView(RootPlayableNode node, int inputPortNum) 
-        : base(node, inputPortNum)
+    public RootNodeView(RootPlayableNode node, int inputPortNum, NodeGraphView graphView) 
+        : base(node, inputPortNum, graphView)
     {
         
     }

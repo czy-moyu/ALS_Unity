@@ -10,9 +10,11 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     protected readonly T _node;
     protected Port outputPort;
     protected readonly List<Port> inputPorts = new ();
+    protected NodeGraphView _graphView;
     
-    protected NodeView(T node, int inputPortNum)
+    protected NodeView(T node, int inputPortNum, NodeGraphView graphView)
     {
+        _graphView = graphView;
         _node = node;
         title = $"{_node.name}({_node.GetType()})";
 
@@ -50,16 +52,52 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
-        // Debug.Log($"evt target: {evt.target}");
-        evt.menu.AppendAction("Read Only", MyCustomAction, DropdownMenuAction.AlwaysEnabled);
-    }
+        if (outputPort != null)
+        {
+            if (outputPort.connected)
+            {
+                evt.menu.AppendAction("Disconnect " + outputPort.portName, (e) =>
+                {
+                    foreach (Edge edge in new List<Edge>(outputPort.connections))
+                    {
+                        outputPort.Disconnect(edge);
+                        edge.input.Disconnect(edge);
+                        _graphView.RemoveElement(edge);
+                        
+                        if (edge.input.node is INodeView nodeView)
+                        {
+                            nodeView.OnInputPortDisconnect(edge.input);
+                        }
+                        OnOutputPortDisconnect();
+                    }
+                });
+                evt.menu.AppendSeparator();
+            }
+        }
 
-    private void MyCustomAction(DropdownMenuAction action)
-    {
-        // 在这里实现您的自定义操作
-        // Debug.Log("My Custom Action executed!");
-        // Debug.Log(parent.transform.position);
-        // Debug.Log(parent.parent.parent.GetType());
+
+        for (var index = 0; index < inputPorts.Count; index++)
+        {
+            Port inputPort = inputPorts[index];
+            if (!inputPort.connected) continue;
+            evt.menu.AppendAction("Disconnect " + inputPort.portName, (e) =>
+            {
+                foreach (Edge edge in new List<Edge>(inputPort.connections))
+                {
+                    inputPort.Disconnect(edge);
+                    edge.output.Disconnect(edge);
+                    _graphView.RemoveElement(edge);
+
+                    if (edge.output.node is INodeView nodeView)
+                    {
+                        nodeView.OnOutputPortDisconnect();
+                    }
+
+                    OnInputPortDisconnect(inputPort);
+                }
+            });
+            evt.menu.AppendSeparator();
+        }
     }
 
     protected void AddInputPort(int num)
@@ -95,6 +133,16 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     public PlayableNode GetPlayableNode()
     {
         return _node;
+    }
+
+    public void OnInputPortDisconnect(Port port)
+    {
+        Debug.Log(GetType() + " OnInputPortDisconnect");
+    }
+
+    public void OnOutputPortDisconnect()
+    {
+        Debug.Log(GetType() + " OnOutputPortDisconnect");
     }
 
     public List<PlayableNode> GetPlayableInputNodes()
@@ -157,4 +205,8 @@ public interface INodeView
     Port GetInputPort(int index);
     
     PlayableNode GetPlayableNode();
+    
+    void OnInputPortDisconnect(Port port);
+
+    void OnOutputPortDisconnect();
 }

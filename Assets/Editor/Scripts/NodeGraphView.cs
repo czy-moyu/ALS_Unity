@@ -14,6 +14,7 @@ public class NodeGraphView : GraphView
 {
     private readonly AnimGraphEditor _editor;
     private readonly List<INodeView> _nodeViews = new();
+    private readonly Dictionary<Type, Type> animNodeToEditorNode = new();
 
     public NodeGraphView(AnimGraphEditor editor)
     {
@@ -73,13 +74,19 @@ public class NodeGraphView : GraphView
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
+        foreach (KeyValuePair<Type, Type> pair in animNodeToEditorNode)
+        {
+            evt.menu.AppendAction(pair.Key.Name, (action) =>
+            {
+                
+            }, DropdownMenuAction.AlwaysEnabled);
+            evt.menu.AppendSeparator();
+        }
     }
 
     private void CreateNodeFromAnimGraphResource()
     {
         RootPlayableNode rootPlayableNode = _editor.GetGraphAsset().GetRootNode();
-
-        Dictionary<Type, Type> animNodeToEditorNode = new();
 
         List<Type> typesImplementingInterface = Tools.GetTypesImplementingInterface<INodeView>();
         foreach (Type editorNodeType in typesImplementingInterface)
@@ -89,22 +96,22 @@ public class NodeGraphView : GraphView
             animNodeToEditorNode.Add(myAttribute.type, editorNodeType);
         }
 
-        AddNode(rootPlayableNode, animNodeToEditorNode);
+        AddNode(rootPlayableNode);
     }
 
-    private INodeView AddNode(PlayableNode node, IReadOnlyDictionary<Type, Type> animNodeToEditorNode)
+    private INodeView AddNode(PlayableNode node)
     {
         if (animNodeToEditorNode.TryGetValue(node.GetType(), out Type editorNodeType))
         {
             ConstructorInfo constructorInfo = editorNodeType
-                .GetConstructor(new[] { node.GetType(), typeof(int) });
+                .GetConstructor(new[] { node.GetType(), typeof(int), GetType()});
             if (constructorInfo != null)
             {
                 // 获取带有PlayableInputAttribute特性的字段
                 List<FieldInfo> fieldsWithCustomAttribute = Tools
                     .GetFieldsWithCustomAttribute<PlayableInputAttribute>(node.GetType());
                 // 创建构造函数的参数数组
-                object[] constructorParameters = { node, fieldsWithCustomAttribute.Count };
+                object[] constructorParameters = { node, fieldsWithCustomAttribute.Count, this };
                 // 使用反射调用构造函数并创建MyClass的实例
                 INodeView nodeView = (INodeView)constructorInfo.Invoke(constructorParameters);
                 _nodeViews.Add(nodeView);
@@ -121,7 +128,7 @@ public class NodeGraphView : GraphView
                 for (int index = 0; index < playableInputNodes.Count; index++)
                 {
                     PlayableNode playableNode = playableInputNodes[index];
-                    INodeView inputNodeView = AddNode(playableNode, animNodeToEditorNode);
+                    INodeView inputNodeView = AddNode(playableNode);
                     if (inputNodeView != null)
                     {
                         // Debug.Log($"连接 {inputNodeView.GetType()} 和 {nodeView.GetType()} index {index}");
@@ -147,14 +154,14 @@ public class NodeGraphView : GraphView
     public void ConnectNodes(INodeView inputNode, INodeView outputNode, int inputPortIndex)
     {
         // 创建一个新的边缘连接输出端口和输入端口
-        var edge = new Edge
-        {
-            output = inputNode.GetOutputPort(),
-            input = outputNode.GetInputPort(inputPortIndex)
-        };
-
+        // var edge = new Edge
+        // {
+        //     output = inputNode.GetOutputPort(),
+        //     input = outputNode.GetInputPort(inputPortIndex)
+        // };
+        Edge connect = inputNode.GetOutputPort().ConnectTo(outputNode.GetInputPort(inputPortIndex));
         // 将边缘添加到图形视图的边缘集合中
-        AddElement(edge);
+        AddElement(connect);
     }
 
     private void OnKeyDown(KeyDownEvent evt)
