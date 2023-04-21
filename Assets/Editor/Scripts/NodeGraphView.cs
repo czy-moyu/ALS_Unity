@@ -55,12 +55,20 @@ public class NodeGraphView : GraphView
         // 添加举行选择框
         this.AddManipulator(new RectangleSelector());
 
-        // 创建背景
-        Insert(0, new GridBackground());
-        
+        CreateBackground();
+
         CreateNodeFromAnimGraphResource();
 
         RegisterCallback<KeyDownEvent>(OnKeyDown);
+    }
+
+    private void CreateBackground()
+    {
+        var gridStyleSheet = Resources.Load<StyleSheet>("GridBackground");
+        styleSheets.Add(gridStyleSheet);
+        // 创建背景
+        GridBackground gridBackground = new GridBackground();
+        Insert(0, gridBackground);
     }
     
     public void DeleteNode(INodeView nodeView)
@@ -106,7 +114,10 @@ public class NodeGraphView : GraphView
         {
             evt.menu.AppendAction("New " +  pair.Key.Name, (action) =>
             {
-                
+                ConstructorInfo constructorInfo = pair.Key
+                    .GetConstructor(Type.EmptyTypes);
+                Assert.IsTrue(constructorInfo != null, nameof(constructorInfo) + " != null");
+                AddNode((PlayableNode)constructorInfo.Invoke(new object[] { }), false);
             }, DropdownMenuAction.AlwaysEnabled);
             evt.menu.AppendSeparator();
         }
@@ -114,7 +125,7 @@ public class NodeGraphView : GraphView
 
     private void CreateNodeFromAnimGraphResource()
     {
-        RootPlayableNode rootPlayableNode = _editor.GetGraphAsset().GetRootNode();
+        RootPlayableNode rootPlayableNode = _editor.GetGraphAsset().GetRootNodeOfRootGraph();
 
         List<Type> typesImplementingInterface = Tools.GetTypesImplementingInterface<INodeView>();
         foreach (Type editorNodeType in typesImplementingInterface)

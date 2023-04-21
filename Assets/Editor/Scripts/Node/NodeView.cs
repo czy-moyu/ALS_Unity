@@ -18,7 +18,7 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     {
         this.graphView = graphView;
         _node = node;
-        title = $"{_node.name}({_node.GetType().Name})";
+        title = $"{_node.GetType().Name}";
 
         RemoveCollapseButton();
         AddSpacer();
@@ -232,8 +232,8 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
         _node.GraphPosition = GetPosition();
         
         // 保存更改
-        EditorUtility.SetDirty(_node);
-        AssetDatabase.SaveAssetIfDirty(_node);
+        // EditorUtility.SetDirty(_node);
+        // AssetDatabase.SaveAssetIfDirty(_node);
     }
 }
 

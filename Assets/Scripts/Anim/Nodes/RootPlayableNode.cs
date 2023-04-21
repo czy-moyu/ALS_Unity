@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Playables;
 
 namespace Moyu.Anim
 {
-    [CreateAssetMenu(fileName = "RootNode", menuName = "PlayableNode/Root", order = 1)]
+    // [CreateAssetMenu(fileName = "RootNode", menuName = "PlayableNode/Root", order = 1)]
+    [Serializable]
     public class RootPlayableNode : PlayableNode
     {
-        [SerializeField]
         [PlayableInput]
+        [SerializeField]
         private PlayableNode inputNode;
     
         public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)

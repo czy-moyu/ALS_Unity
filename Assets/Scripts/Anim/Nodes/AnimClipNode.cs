@@ -8,14 +8,15 @@ using UnityEngine.Playables;
 
 namespace Moyu.Anim
 {
-    [CreateAssetMenu(fileName = "AnimClipNode", menuName = "PlayableNode/AnimClip", order = 2)]
+    // [CreateAssetMenu(fileName = "AnimClipNode", menuName = "PlayableNode/AnimClip", order = 2)]
+    [Serializable]
     public class AnimClipNode : PlayableNode
     {
         [SerializeField]
         private AnimationClip _clip;
     
-        [SerializeField]
         [Range(0, 10f)]
+        [SerializeField]
         private float speed = 1f;
 
         [SerializeField]

@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 
 public class AnimGraphEditor : EditorWindow
 {
-    private AnimGraph _graphAsset;
+    private AnimInstance _graphAsset;
     private NodeGraphView nodeGraphView;
     private TripleSplitterRowView tripleSplitterRowView;
     
@@ -20,7 +20,7 @@ public class AnimGraphEditor : EditorWindow
     public static bool OpenGraphAsset(int instanceId, int line)
     {
         Object asset = EditorUtility.InstanceIDToObject(instanceId);
-        if (asset is not AnimGraph animGraphAsset) return false;
+        if (asset is not AnimInstance animGraphAsset) return false;
         bool success = true;
         AnimGraphEditor editor = Resources.FindObjectsOfTypeAll<AnimGraphEditor>()
             .FirstOrDefault(window => window._graphAsset == animGraphAsset);
@@ -51,7 +51,7 @@ public class AnimGraphEditor : EditorWindow
         return true;
     }
 
-    public AnimGraph GetGraphAsset()
+    public AnimInstance GetGraphAsset()
     {
         return _graphAsset;
     }
@@ -86,7 +86,7 @@ public class AnimGraphEditor : EditorWindow
         OpenGraphAsset(_graphAsset);
     }
 
-    private void OpenGraphAsset(AnimGraph animGraphAsset)
+    private void OpenGraphAsset(AnimInstance animGraphAsset)
     {
         _graphAsset = animGraphAsset;
         ConstructGraphView();
@@ -110,29 +110,14 @@ public class AnimGraphEditor : EditorWindow
 
         // Create the buttons for the toolbar
         Button saveBtn = CreateCustomToolbarButton("Save", OnSaveToolBarBtnClicked);
-        Button AddNodeBtn = CreateCustomToolbarButton("AddSelectNode", AddSelectNode);
 
         // Add buttons to the toolbar
         toolbar.Add(saveBtn);
-        toolbar.Add(AddNodeBtn);
 
         // Add toolbar to the root visual element
         root.Add(toolbar);
     }
 
-    private void AddSelectNode()
-    {
-        PlayableNode node = Selection.activeObject as PlayableNode;
-        if (node == null) return;
-        if (nodeGraphView.IsNodeExist(node))
-        {
-            Debug.LogWarning("Node already exist");
-            return;
-        }
-        nodeGraphView.AddNode(node, false, 
-            nodeGraphView.GetRootNode().GetPlayableNode().GraphPosition);
-    }
-    
     private void OnSaveToolBarBtnClicked()
     {
         nodeGraphView.SaveChanges();

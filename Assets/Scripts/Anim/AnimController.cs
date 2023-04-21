@@ -15,7 +15,8 @@ public class AnimController : MonoBehaviour
     private Skeleton _skeleton;
     private Dictionary<string, float> curveParams = new();
     [SerializeField]
-    private AnimGraph animGraph;
+    private AnimInstance animGraph;
+    private RootPlayableNode rootNodeOfRootGraph;
 
     private void Start()
     {
@@ -26,7 +27,8 @@ public class AnimController : MonoBehaviour
         playableGraph = PlayableGraph.Create();
         playableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
         animGraph.GetAnimParams().Init();
-        SetSourcePlayable(animGraph.GetRootNode().GetPlayable(playableGraph, this));
+        rootNodeOfRootGraph = animGraph.GetRootNodeOfRootGraph();
+        SetSourcePlayable(rootNodeOfRootGraph.GetPlayable(playableGraph, this));
     }
     
     public T GetAnimParam<T>(string paramName)
@@ -54,7 +56,7 @@ public class AnimController : MonoBehaviour
     
     private void Update()
     {
-        animGraph.GetRootNode().UpdatePlayable(Time.deltaTime, playableGraph, this);
+        rootNodeOfRootGraph.UpdatePlayable(Time.deltaTime, playableGraph, this);
         
         // 播放动画
         playableGraph.Evaluate(Time.deltaTime);

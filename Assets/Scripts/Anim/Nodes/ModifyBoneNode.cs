@@ -8,7 +8,8 @@ using UnityEngine.Playables;
 
 namespace Moyu.Anim
 {
-    [CreateAssetMenu(fileName = "ModifyBoneNode", menuName = "PlayableNode/ModifyBone", order = 3)]
+    // [CreateAssetMenu(fileName = "ModifyBoneNode", menuName = "PlayableNode/ModifyBone", order = 3)]
+    [Serializable]
     public class ModifyBoneNode : PlayableNode
     {
         [SerializeField]

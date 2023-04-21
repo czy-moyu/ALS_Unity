@@ -5,7 +5,8 @@ using UnityEngine.Playables;
 
 namespace Moyu.Anim
 {
-    [CreateAssetMenu(fileName = "BlendSpace2D", menuName = "PlayableNode/BlendSpace2D", order = 3)]
+    // [CreateAssetMenu(fileName = "BlendSpace2D", menuName = "PlayableNode/BlendSpace2D", order = 3)]
+    [Serializable]
     public class BlendSpace2DNode : PlayableNode
     {
         [SerializeField]

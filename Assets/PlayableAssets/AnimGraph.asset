@@ -12,4 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1566a0966db41b48802b2e9cb0272a1, type: 3}
   m_Name: AnimGraph
   m_EditorClassIdentifier: 
-  rootNode: {fileID: 11400000, guid: 7797b00f36b8d6e45abebef154edc13d, type: 2}
+  animParams:
+    floatParams: []
+  rootNode:
+    id: a8b6837c-df75-41e0-93fc-8408c110c59b
+    graphPosition:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    inputNode:
+      id: 650160dc-1048-464d-9d19-ee48a88f784a
+      graphPosition:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0

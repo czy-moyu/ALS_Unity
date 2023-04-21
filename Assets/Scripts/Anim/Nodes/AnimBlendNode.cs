@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
 namespace Moyu.Anim
 {
-    [CreateAssetMenu(fileName = "AnimBlendNode", menuName = "PlayableNode/AnimBlend", order = 3)]
+    // [CreateAssetMenu(fileName = "AnimBlendNode", menuName = "PlayableNode/AnimBlend", order = 3)]
+    [Serializable]
     public class AnimBlendNode : PlayableNode
     {
         [SerializeField]
