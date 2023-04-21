@@ -142,6 +142,10 @@ public class NodeGraphView : GraphView
     {
         foreach (KeyValuePair<Type, Type> pair in animNodeToEditorNode)
         {
+            if (pair.Key == typeof(RootPlayableNode))
+            {
+                continue;
+            }
             evt.menu.AppendAction("New " +  pair.Key.Name, (action) =>
             {
                 ConstructorInfo constructorInfo = pair.Key

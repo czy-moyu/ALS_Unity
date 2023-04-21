@@ -5,6 +5,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using Object = UnityEngine.Object;
 
 namespace Moyu.Anim
 {
@@ -35,10 +36,10 @@ namespace Moyu.Anim
             return animationClipPlayable;
         }
         
-        public AnimationClip GetClip()
-        {
-            return _clip;
-        }
+        // public AnimationClip GetClip()
+        // {
+        //     return _clip;
+        // }
 
         public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
             AnimController animController)
@@ -48,9 +49,9 @@ namespace Moyu.Anim
                 animationClipPlayable.SetTime(singleFrameTime);
         }
 
-        public void SetClip(AnimationClip newClip)
-        {
-            _clip = newClip;
-        }
+        // public void SetClip(AnimationClip newClip)
+        // {
+        //     _clip = newClip;
+        // }
     }
 }
