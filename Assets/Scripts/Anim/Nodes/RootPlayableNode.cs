@@ -9,7 +9,8 @@ namespace Moyu.Anim
     public class RootPlayableNode : PlayableNode
     {
         [PlayableInput]
-        [SerializeField]
+        [SerializeReference]
+        [HideInInspector]
         private PlayableNode inputNode;
     
         public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)

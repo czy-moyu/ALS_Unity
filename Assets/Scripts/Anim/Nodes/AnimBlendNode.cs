@@ -9,11 +9,11 @@ namespace Moyu.Anim
     [Serializable]
     public class AnimBlendNode : PlayableNode
     {
-        [SerializeField]
+        [SerializeReference]
         [PlayableInput]
         private PlayableNode input1;
     
-        [SerializeField]
+        [SerializeReference]
         [PlayableInput]
         private PlayableNode input2;
 

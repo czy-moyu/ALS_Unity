@@ -10,4 +10,9 @@ public class ClipNodeView : NodeView<AnimClipNode>
     {
         AddOutputPort();
     }
+
+    public override INodeInspector GetNodeInspector()
+    {
+        return new AnimClipInspector(this);
+    }
 }

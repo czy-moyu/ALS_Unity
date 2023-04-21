@@ -55,14 +55,17 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         evt.StopPropagation();
-        
-        evt.menu.AppendAction("Delete", (e) =>
+
+        if (GetType() != typeof(RootNodeView))
         {
-            graphView.DeleteNode(this);
-            DisConnectOutputEdge();
-            DisConnectAllInputEdge();
-        });
-        evt.menu.AppendSeparator();
+            evt.menu.AppendAction("Delete", (e) =>
+            {
+                graphView.DeleteNode(this);
+                DisConnectOutputEdge();
+                DisConnectAllInputEdge();
+            });
+            evt.menu.AppendSeparator();
+        }
         
         if (outputPort != null)
         {
@@ -170,6 +173,11 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
         return _node;
     }
 
+    public T GetActualNode()
+    {
+        return _node;
+    }
+
     public void OnInputPortDisconnect(Port port)
     {
         // Debug.Log(GetType() + " OnInputPortDisconnect");
@@ -202,6 +210,16 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     public void OnOutputPortConnect()
     {
         // Debug.Log(GetType() + " OnOutputPortConnect");
+    }
+
+    public void OnNodeSelected()
+    {
+        
+    }
+
+    public virtual INodeInspector GetNodeInspector()
+    {
+        return new NodeInspector<INodeView>(this);
     }
 
     public List<PlayableNode> GetPlayableInputNodesUsingReflection()
@@ -258,4 +276,8 @@ public interface INodeView
     void OnInputPortConnect(Port port, Edge edge);
     
     void OnOutputPortConnect();
+    
+    void OnNodeSelected();
+
+    INodeInspector GetNodeInspector();
 }

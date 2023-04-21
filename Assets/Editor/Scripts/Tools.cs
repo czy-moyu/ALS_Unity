@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// show a read-only property in inspector
@@ -91,5 +92,15 @@ public static class Tools
     public static Task Delay(float seconds)
     {
         return Task.Delay(TimeSpan.FromSeconds(seconds));
+    }
+}
+
+public class HorizontalSeparatorVisualElement : VisualElement
+{
+    public HorizontalSeparatorVisualElement(int height)
+    {
+        style.backgroundColor = new Color(0.3f, 0.3f, 0.3f, 0f);
+        style.height = height;
+        style.flexGrow = 1;
     }
 }

@@ -13,7 +13,7 @@ using Object = UnityEngine.Object;
 public class AnimGraphEditor : EditorWindow
 {
     private AnimInstance _graphAsset;
-    private NodeGraphView nodeGraphView;
+    private NodeGraphView rootGraphView;
     private TripleSplitterRowView tripleSplitterRowView;
     
     [OnOpenAsset]
@@ -61,8 +61,8 @@ public class AnimGraphEditor : EditorWindow
         AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
         AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
         
-        // AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
-        // AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
+        AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
+        AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
     }
 
     private void ConstructGraphView()
@@ -71,13 +71,34 @@ public class AnimGraphEditor : EditorWindow
         tripleSplitterRowView = new TripleSplitterRowView(
             new Vector2(200, 400), new Vector2(200, 400));
         rootVisualElement.Add(tripleSplitterRowView);
+
+        InitInspectorView();
         CreateNodeGraphView(tripleSplitterRowView.MiddlePane);
+    }
+    
+    private void InitInspectorView()
+    {
+        var inspectorToggle = new CustomToolbarToggle
+        {
+            text = "Inspector",
+            value = false,
+        };
+        inspectorToggle.style.borderBottomWidth = 0;
+        inspectorToggle.style.borderTopWidth = 0;
+        inspectorToggle.style.borderLeftWidth = 0;
+        inspectorToggle.style.borderRightWidth = 0;
+        tripleSplitterRowView.RightPane.Add(inspectorToggle);
+        tripleSplitterRowView.RightPane.style.paddingLeft = 5;
     }
 
     private void OnBeforeAssemblyReload()
     {
-        Assert.IsNotNull(nodeGraphView);
-        nodeGraphView.SaveChanges();
+        // Assert.IsNotNull(rootGraphView);
+        // rootGraphView.SaveChanges();
+        // if (EditorUtility.DisplayDialog("Warning", msg, "Save", "Discard"))
+        // {
+        //     
+        // }
     }
 
     private void OnAfterAssemblyReload()
@@ -95,6 +116,11 @@ public class AnimGraphEditor : EditorWindow
     public TripleSplitterRowView GetTripleSplitterRowView()
     {
         return tripleSplitterRowView;
+    }
+
+    private void Update()
+    {
+        rootGraphView.Update();
     }
 
     private void CreateToolBar()
@@ -120,7 +146,15 @@ public class AnimGraphEditor : EditorWindow
 
     private void OnSaveToolBarBtnClicked()
     {
-        nodeGraphView.SaveChanges();
+        SaveChanges();
+    }
+
+    public override void SaveChanges()
+    {
+        base.SaveChanges();
+        rootGraphView.SaveChanges();
+        EditorUtility.SetDirty(_graphAsset);
+        AssetDatabase.SaveAssetIfDirty(_graphAsset);
     }
     
     private Button CreateCustomToolbarButton(string text, Action onClick)
@@ -132,10 +166,19 @@ public class AnimGraphEditor : EditorWindow
 
     private void CreateNodeGraphView(VisualElement root)
     {
-        nodeGraphView = new(this)
+        rootGraphView = new NodeGraphView(this)
         {
             style = { flexGrow = 1}
         };
-        root.Add(nodeGraphView);
+        root.Add(rootGraphView);
+        rootGraphView.AddOnNodeViewSelected(OnNodeViewSelected);
+    }
+
+    private void OnNodeViewSelected(INodeInspector inspector)
+    {
+        // Debug.Log(inspector);
+        tripleSplitterRowView.RightPane.Clear();
+        InitInspectorView();
+        tripleSplitterRowView.RightPane.Add(inspector as VisualElement);
     }
 }

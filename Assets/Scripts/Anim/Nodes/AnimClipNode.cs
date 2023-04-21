@@ -34,6 +34,11 @@ namespace Moyu.Anim
             animationClipPlayable.SetSpeed(speed);
             return animationClipPlayable;
         }
+        
+        public AnimationClip GetClip()
+        {
+            return _clip;
+        }
 
         public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
             AnimController animController)
@@ -41,6 +46,11 @@ namespace Moyu.Anim
             animationClipPlayable.SetSpeed(speed);
             if (isSingleFrame)
                 animationClipPlayable.SetTime(singleFrameTime);
+        }
+
+        public void SetClip(AnimationClip newClip)
+        {
+            _clip = newClip;
         }
     }
 }

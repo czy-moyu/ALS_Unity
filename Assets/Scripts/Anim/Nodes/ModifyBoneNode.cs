@@ -12,7 +12,7 @@ namespace Moyu.Anim
     [Serializable]
     public class ModifyBoneNode : PlayableNode
     {
-        [SerializeField]
+        [SerializeReference]
         [PlayableInput]
         private PlayableNode inputNode;
     

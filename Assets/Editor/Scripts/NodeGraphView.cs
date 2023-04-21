@@ -18,6 +18,7 @@ public class NodeGraphView : GraphView
     private readonly AnimGraphEditor _editor;
     private readonly List<INodeView> _nodeViews = new();
     private readonly Dictionary<Type, Type> animNodeToEditorNode = new();
+    private Action<INodeInspector> OnNodeViewSelected;
 
     public NodeGraphView(AnimGraphEditor editor)
     {
@@ -60,6 +61,35 @@ public class NodeGraphView : GraphView
         CreateNodeFromAnimGraphResource();
 
         RegisterCallback<KeyDownEvent>(OnKeyDown);
+    }
+
+    public void AddOnNodeViewSelected(Action<INodeInspector> action)
+    {
+        OnNodeViewSelected += action;
+    }
+    
+    private ISelectable prevSelection;
+    public void Update()
+    {
+        if (selection.Count == 1 && prevSelection != selection[0])
+        {
+            OnSelectionChange();
+        }
+        if (selection.Count == 1)
+            prevSelection = selection[0];
+    }
+    
+    private void OnSelectionChange()
+    {
+        if (selection.Count == 1)
+        {
+            ISelectable selectable = selection[0];
+            if (selectable is INodeView nodeView)
+            {
+                nodeView.OnNodeSelected();
+                OnNodeViewSelected?.Invoke(nodeView.GetNodeInspector());
+            }
+        }
     }
 
     private void CreateBackground()

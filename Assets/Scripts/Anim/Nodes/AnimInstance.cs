@@ -7,7 +7,7 @@ namespace Moyu.Anim
     public class AnimInstance : ScriptableObject
     {
         [SerializeField]
-        private List<AnimControllerParamsPair<AnimGraph>> animGraphs;
+        private List<AnimGraph> animGraphs = new ();
         
         [SerializeField]
         private AnimParams animParams;
@@ -21,23 +21,19 @@ namespace Moyu.Anim
         {
             for (var index = 0; index < animGraphs.Count; index++)
             {
-                AnimControllerParamsPair<AnimGraph> animGraph = animGraphs[index];
-                if (animGraph.name == graphName)
+                AnimGraph animGraph = animGraphs[index];
+                if (animGraph.Name == graphName)
                 {
-                    return animGraph.value;
+                    return animGraph;
                 }
             }
-
             return null;
         }
         
         public void AddAnimGraph(string graphName, AnimGraph animGraph)
         {
-            animGraphs.Add(new AnimControllerParamsPair<AnimGraph>()
-            {
-                name = graphName,
-                value = animGraph
-            });
+            animGraph.Name = graphName;
+            animGraphs.Add(animGraph);
         }
         
         public RootPlayableNode GetRootNodeOfRootGraph()

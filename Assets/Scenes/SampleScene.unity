@@ -426,7 +426,7 @@ PrefabInstance:
         type: 3}
       propertyPath: animGraph
       value: 
-      objectReference: {fileID: 11400000, guid: f2c1fb02d3ecde742bd824ad609b19ad,
+      objectReference: {fileID: 11400000, guid: 6557a509bc070a64b8b2f1356f58d690,
         type: 2}
     - target: {fileID: 6870409748502577722, guid: 79e260ed3f8739c43ad69db5b053354a,
         type: 3}

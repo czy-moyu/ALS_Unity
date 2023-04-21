@@ -12,21 +12,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1566a0966db41b48802b2e9cb0272a1, type: 3}
   m_Name: AnimGraph
   m_EditorClassIdentifier: 
+  animGraphs:
+  - name: RootGraph
+    rootNode:
+      rid: 6704167086866563072
   animParams:
     floatParams: []
-  rootNode:
-    id: a8b6837c-df75-41e0-93fc-8408c110c59b
-    graphPosition:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    inputNode:
-      id: 650160dc-1048-464d-9d19-ee48a88f784a
-      graphPosition:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6704167086866563072
+      type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: 99344789-0583-4eb5-9872-8ab9aa7c1392
+        graphPosition:
+          serializedVersion: 2
+          x: 87.20001
+          y: -62.4
+          width: 175.20001
+          height: 76.8
+        inputNode:
+          rid: 6704167087142076417
+    - rid: 6704167087142076417
+      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: 8c247f81-6e8e-410f-b6e5-7a685b31788b
+        graphPosition:
+          serializedVersion: 2
+          x: -183.99998
+          y: -62.4
+          width: 159.99998
+          height: 100.799995
+        input1:
+          rid: 6704167087142076418
+        input2:
+          rid: 6704167087142076419
+        isBindParam: 0
+        paramName: 
+        alpha: 0
+    - rid: 6704167087142076418
+      type: {class: AnimClipNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: e516efe6-ed87-460a-9e37-7a6852faff65
+        graphPosition:
+          serializedVersion: 2
+          x: -447.19998
+          y: -112.8
+          width: 149.59999
+          height: 76.8
+        _clip: {fileID: 0}
+        speed: 1
+        isSingleFrame: 0
+        singleFrameTime: 0
+    - rid: 6704167087142076419
+      type: {class: AnimClipNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: 39698a68-473b-46af-913b-96039245d833
+        graphPosition:
+          serializedVersion: 2
+          x: -447.19998
+          y: -2.3999977
+          width: 149.59999
+          height: 76.799995
+        _clip: {fileID: 8993902097722301239, guid: aedb3f3ef3164ba4d8338722404c599a,
+          type: 3}
+        speed: 1
+        isSingleFrame: 0
+        singleFrameTime: 0
