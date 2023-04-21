@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AnimGraph", menuName = "PlayableNode/AnimGraph", order = 0)]
-public class AnimGraph : ScriptableObject
+namespace Moyu.Anim
 {
-    [SerializeField]
-    private AnimParams animParams;
+    [CreateAssetMenu(fileName = "AnimGraph", menuName = "PlayableNode/AnimGraph", order = 0)]
+    public class AnimGraph : ScriptableObject
+    {
+        [SerializeField]
+        private AnimParams animParams;
     
-    [SerializeField]
-    private RootPlayableNode rootNode;
+        [SerializeField]
+        private RootPlayableNode rootNode;
 
-    public RootPlayableNode GetRootNode()
-    {
-        return rootNode;
-    }
+        public RootPlayableNode GetRootNode()
+        {
+            return rootNode;
+        }
     
-    public AnimParams GetAnimParams()
-    {
-        return animParams;
+        public AnimParams GetAnimParams()
+        {
+            return animParams;
+        }
     }
 }

@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-[CreateAssetMenu(fileName = "RootNode", menuName = "PlayableNode/Root", order = 1)]
-public class RootPlayableNode : PlayableNode
+namespace Moyu.Anim
 {
-    [SerializeField]
-    [PlayableInput]
-    private PlayableNode inputNode;
+    [CreateAssetMenu(fileName = "RootNode", menuName = "PlayableNode/Root", order = 1)]
+    public class RootPlayableNode : PlayableNode
+    {
+        [SerializeField]
+        [PlayableInput]
+        private PlayableNode inputNode;
     
-    public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)
-    {
-        return inputNode.GetPlayable(playableGraph, animController);
-    }
+        public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)
+        {
+            return inputNode.GetPlayable(playableGraph, animController);
+        }
 
-    public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
-        AnimController animController)
-    {
-        inputNode.UpdatePlayable(delta, playableGraph, animController);
+        public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
+            AnimController animController)
+        {
+            inputNode.UpdatePlayable(delta, playableGraph, animController);
+        }
     }
 }

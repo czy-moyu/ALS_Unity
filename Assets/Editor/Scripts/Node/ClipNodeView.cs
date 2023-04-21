@@ -1,5 +1,7 @@
 
 
+using Moyu.Anim;
+
 [BindAnimNode(typeof(AnimClipNode))]
 public class ClipNodeView : NodeView<AnimClipNode>
 {

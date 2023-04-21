@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-public abstract class PlayableNode : ScriptableObject
+namespace Moyu.Anim
 {
-    #if UNITY_EDITOR
+    public abstract class PlayableNode : ScriptableObject
+    {
+#if UNITY_EDITOR
     [SerializeField]
     [ReadOnly]
     private Rect graphPosition;
@@ -13,10 +15,11 @@ public abstract class PlayableNode : ScriptableObject
         get => graphPosition;
         set => graphPosition = value;
     }
-    #endif
+#endif
     
-    public abstract Playable GetPlayable(PlayableGraph playableGraph, AnimController animController);
+        public abstract Playable GetPlayable(PlayableGraph playableGraph, AnimController animController);
 
-    public abstract void UpdatePlayable(float delta, PlayableGraph playableGraph,
-        AnimController animController);
+        public abstract void UpdatePlayable(float delta, PlayableGraph playableGraph,
+            AnimController animController);
+    }
 }

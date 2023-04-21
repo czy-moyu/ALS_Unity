@@ -1,53 +1,57 @@
 using System;
 using System.Collections;
 using GBG.AnimationGraph.Component;
+using Moyu.Anim;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-[CreateAssetMenu(fileName = "ModifyBoneNode", menuName = "PlayableNode/ModifyBone", order = 3)]
-public class ModifyBoneNode : PlayableNode
+namespace Moyu.Anim
 {
-    [SerializeField]
-    [PlayableInput]
-    private PlayableNode inputNode;
-    
-    [SerializeField]
-    private string[] boneNames;
-    
-    [SerializeField]
-    private BlendSpace blendSpace;
-
-    [SerializeField]
-    private Vector3 positionOffset;
-    
-    public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)
+    [CreateAssetMenu(fileName = "ModifyBoneNode", menuName = "PlayableNode/ModifyBone", order = 3)]
+    public class ModifyBoneNode : PlayableNode
     {
-        int[] boneNameHashs = new int[boneNames.Length];
-        for (int i = 0; i < boneNames.Length; ++i)
+        [SerializeField]
+        [PlayableInput]
+        private PlayableNode inputNode;
+    
+        [SerializeField]
+        private string[] boneNames;
+    
+        [SerializeField]
+        private BlendSpace blendSpace;
+
+        [SerializeField]
+        private Vector3 positionOffset;
+    
+        public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)
         {
-            boneNameHashs[i] = Animator.StringToHash(boneNames[i]);
+            int[] boneNameHashs = new int[boneNames.Length];
+            for (int i = 0; i < boneNames.Length; ++i)
+            {
+                boneNameHashs[i] = Animator.StringToHash(boneNames[i]);
+            }
+            ModifyBoneJob animationJob = new(this, animController.GetSkeleton(), boneNameHashs);
+            AnimationScriptPlayable playable = AnimationScriptPlayable.Create(playableGraph, animationJob);
+            if (inputNode == null) return playable;
+            // playable.SetInputCount(1);
+            playable.SetProcessInputs(false);
+            Playable inputPlayable = inputNode.GetPlayable(playableGraph, animController);
+            playable.AddInput(inputPlayable, 0, 1f);
+            // playableGraph.Connect(inputPlayable, 0, playable, 0);
+            return playable;
         }
-        ModifyBoneJob animationJob = new(this, animController.GetSkeleton(), boneNameHashs);
-        AnimationScriptPlayable playable = AnimationScriptPlayable.Create(playableGraph, animationJob);
-        if (inputNode == null) return playable;
-        // playable.SetInputCount(1);
-        playable.SetProcessInputs(false);
-        Playable inputPlayable = inputNode.GetPlayable(playableGraph, animController);
-        playable.AddInput(inputPlayable, 0, 1f);
-        // playableGraph.Connect(inputPlayable, 0, playable, 0);
-        return playable;
-    }
     
-    public Vector3 GetPositionOffset()
-    {
-        return positionOffset;
-    }
+        public Vector3 GetPositionOffset()
+        {
+            return positionOffset;
+        }
 
-    public override void UpdatePlayable(float delta, PlayableGraph playableGraph, AnimController animController)
-    {
-        if (inputNode != null)
-            inputNode.UpdatePlayable(delta, playableGraph, animController);
+        public override void UpdatePlayable(float delta, PlayableGraph playableGraph, AnimController animController)
+        {
+            if (inputNode != null)
+                inputNode.UpdatePlayable(delta, playableGraph, animController);
+        }
     }
 }
 

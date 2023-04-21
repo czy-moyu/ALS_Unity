@@ -1,0 +1,16 @@
+{
+    "name": "AnimEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:92beda7bf4fc71d49a52cd53b82c7630"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

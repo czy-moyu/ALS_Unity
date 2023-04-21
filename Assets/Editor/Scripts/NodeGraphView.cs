@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Moyu.Anim;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.UIElements;
 using Edge = UnityEditor.Experimental.GraphView.Edge;
@@ -72,11 +75,17 @@ public class NodeGraphView : GraphView
         viewTransform.position = -node.GetPlayableNode().GraphPosition.center + graphViewCenter;
     }
 
+    public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+    {
+        return ports.ToList().Where(port 
+            => port.direction != startPort.direction && port.node != startPort.node).ToList();
+    }
+
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         foreach (KeyValuePair<Type, Type> pair in animNodeToEditorNode)
         {
-            evt.menu.AppendAction(pair.Key.Name, (action) =>
+            evt.menu.AppendAction("New " +  pair.Key.Name, (action) =>
             {
                 
             }, DropdownMenuAction.AlwaysEnabled);
@@ -153,15 +162,14 @@ public class NodeGraphView : GraphView
 
     public void ConnectNodes(INodeView inputNode, INodeView outputNode, int inputPortIndex)
     {
-        // 创建一个新的边缘连接输出端口和输入端口
-        // var edge = new Edge
-        // {
-        //     output = inputNode.GetOutputPort(),
-        //     input = outputNode.GetInputPort(inputPortIndex)
-        // };
-        Edge connect = inputNode.GetOutputPort().ConnectTo(outputNode.GetInputPort(inputPortIndex));
+        Assert.IsFalse(inputNode == outputNode);
+        Port inputPort = outputNode.GetInputPort(inputPortIndex);
+        Edge connect = inputNode.GetOutputPort().ConnectTo(inputPort);
         // 将边缘添加到图形视图的边缘集合中
         AddElement(connect);
+        
+        // inputNode.OnOutputPortConnect();
+        // outputNode.OnInputPortConnect(inputPort, node);
     }
 
     private void OnKeyDown(KeyDownEvent evt)
