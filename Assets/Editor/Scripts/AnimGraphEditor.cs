@@ -20,38 +20,35 @@ public class AnimGraphEditor : EditorWindow
     public static bool OpenGraphAsset(int instanceId, int line)
     {
         Object asset = EditorUtility.InstanceIDToObject(instanceId);
-        if (asset is AnimGraph animGraphAsset)
+        if (asset is not AnimGraph animGraphAsset) return false;
+        bool success = true;
+        AnimGraphEditor editor = Resources.FindObjectsOfTypeAll<AnimGraphEditor>()
+            .FirstOrDefault(window => window._graphAsset == animGraphAsset);
+        if (!editor)
         {
-            bool success = true;
-            AnimGraphEditor editor = Resources.FindObjectsOfTypeAll<AnimGraphEditor>()
-                .FirstOrDefault(window => window._graphAsset == animGraphAsset);
-            if (!editor)
+            editor = CreateInstance<AnimGraphEditor>();
+            try
             {
-                editor = CreateInstance<AnimGraphEditor>();
-                try
-                {
-                    editor.OpenGraphAsset(animGraphAsset);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e);
-                    success = false;
-                }
+                editor.OpenGraphAsset(animGraphAsset);
             }
-            
-            if (success)
+            catch (Exception e)
             {
-                editor.Show();
-                editor.Focus();
+                Debug.LogError(e);
+                success = false;
             }
-            else
-            {
-                editor.Close();
-            }
-
-            return true;
         }
-        return false;
+            
+        if (success)
+        {
+            editor.Show();
+            editor.Focus();
+        }
+        else
+        {
+            editor.Close();
+        }
+
+        return true;
     }
 
     public AnimGraph GetGraphAsset()
@@ -108,17 +105,32 @@ public class AnimGraphEditor : EditorWindow
         Assert.IsNotNull(styleSheet);
 
         // Create the toolbar
-        Toolbar toolbar = new Toolbar();
+        Toolbar toolbar = new();
         toolbar.styleSheets.Add(styleSheet);
 
         // Create the buttons for the toolbar
         Button saveBtn = CreateCustomToolbarButton("Save", OnSaveToolBarBtnClicked);
+        Button AddNodeBtn = CreateCustomToolbarButton("AddSelectNode", AddSelectNode);
 
         // Add buttons to the toolbar
         toolbar.Add(saveBtn);
+        toolbar.Add(AddNodeBtn);
 
         // Add toolbar to the root visual element
         root.Add(toolbar);
+    }
+
+    private void AddSelectNode()
+    {
+        PlayableNode node = Selection.activeObject as PlayableNode;
+        if (node == null) return;
+        if (nodeGraphView.IsNodeExist(node))
+        {
+            Debug.LogWarning("Node already exist");
+            return;
+        }
+        nodeGraphView.AddNode(node, false, 
+            nodeGraphView.GetRootNode().GetPlayableNode().GraphPosition);
     }
     
     private void OnSaveToolBarBtnClicked()

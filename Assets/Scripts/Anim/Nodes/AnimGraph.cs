@@ -12,6 +12,11 @@ namespace Moyu.Anim
     
         [SerializeField]
         private RootPlayableNode rootNode;
+        
+#if UNITY_EDITOR
+        [SerializeField]
+        private List<PlayableNode> _nodeViewsWithoutOutputNode = new();
+#endif
 
         public RootPlayableNode GetRootNode()
         {
@@ -22,5 +27,12 @@ namespace Moyu.Anim
         {
             return animParams;
         }
+
+#if UNITY_EDITOR
+        public List<PlayableNode> GetNodeViewsWithoutOutputNode()
+        {
+            return _nodeViewsWithoutOutputNode;
+        }
+#endif
     }
 }

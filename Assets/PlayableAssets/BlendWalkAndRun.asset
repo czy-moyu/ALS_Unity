@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graphPosition:
     serializedVersion: 2
-    x: 746.39996
-    y: 214.40001
+    x: 738.39996
+    y: 199.2
     width: 272.80005
     height: 100.79999
   input1: {fileID: 11400000, guid: b3cc47b0d85127947b877d0b8cee8c4c, type: 2}

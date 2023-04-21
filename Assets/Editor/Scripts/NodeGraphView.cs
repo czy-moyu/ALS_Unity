@@ -62,6 +62,25 @@ public class NodeGraphView : GraphView
 
         RegisterCallback<KeyDownEvent>(OnKeyDown);
     }
+    
+    public void DeleteNode(INodeView nodeView)
+    {
+        _nodeViews.Remove(nodeView);
+        RemoveElement(nodeView.GetNode());
+    }
+
+    public INodeView GetRootNode()
+    {
+        foreach (INodeView nodeView in _nodeViews)
+        {
+            if (nodeView.GetPlayableNode() is RootPlayableNode)
+            {
+                return nodeView;
+            }
+        }
+
+        return null;
+    }
 
     private async void CenterNodeInView(INodeView node)
     {
@@ -105,10 +124,23 @@ public class NodeGraphView : GraphView
             animNodeToEditorNode.Add(myAttribute.type, editorNodeType);
         }
 
-        AddNode(rootPlayableNode);
+        AddNode(rootPlayableNode, true);
+    }
+    
+    public bool IsNodeExist(PlayableNode node)
+    {
+        foreach (INodeView nodeView in _nodeViews)
+        {
+            if (nodeView.GetPlayableNode() == node)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    private INodeView AddNode(PlayableNode node)
+    public INodeView AddNode(PlayableNode node, bool createInput, Rect? position = null)
     {
         if (animNodeToEditorNode.TryGetValue(node.GetType(), out Type editorNodeType))
         {
@@ -126,18 +158,24 @@ public class NodeGraphView : GraphView
                 _nodeViews.Add(nodeView);
                 AddElement((GraphElement)nodeView);
 
+                if (position != null)
+                {
+                    nodeView.GetNode().SetPosition((Rect)position);
+                }
+
                 if (nodeView is RootNodeView rootNodeView)
                 {
                     // 将节点定位到GraphView的中心
                     CenterNodeInView(rootNodeView);
                 }
 
-                List<PlayableNode> playableInputNodes = nodeView.GetPlayableInputNodes();
+                if (!createInput) return nodeView;
+                List<PlayableNode> playableInputNodes = nodeView.GetPlayableInputNodesUsingReflection();
 
                 for (int index = 0; index < playableInputNodes.Count; index++)
                 {
                     PlayableNode playableNode = playableInputNodes[index];
-                    INodeView inputNodeView = AddNode(playableNode);
+                    INodeView inputNodeView = AddNode(playableNode, true);
                     if (inputNodeView != null)
                     {
                         // Debug.Log($"连接 {inputNodeView.GetType()} 和 {nodeView.GetType()} index {index}");
@@ -147,17 +185,13 @@ public class NodeGraphView : GraphView
 
                 return nodeView;
             }
-            else
-            {
-                Debug.LogError("No constructor for " + editorNodeType);
-                return null;
-            }
-        }
-        else
-        {
-            Debug.LogError("No editor node for " + node.GetType());
+
+            Debug.LogError("No constructor for " + editorNodeType);
             return null;
         }
+
+        Debug.LogError("No editor node for " + node.GetType());
+        return null;
     }
 
     public void ConnectNodes(INodeView inputNode, INodeView outputNode, int inputPortIndex)

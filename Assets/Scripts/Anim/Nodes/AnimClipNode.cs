@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
@@ -16,8 +18,14 @@ namespace Moyu.Anim
         [Range(0, 10f)]
         private float speed = 1f;
 
+        [SerializeField]
+        private bool isSingleFrame;
+        
+        [SerializeField]
+        private float singleFrameTime;
+        
         private AnimationClipPlayable animationClipPlayable;
-    
+
         public override Playable GetPlayable(PlayableGraph playableGraph, 
             AnimController animController)
         {
@@ -30,6 +38,8 @@ namespace Moyu.Anim
             AnimController animController)
         {
             animationClipPlayable.SetSpeed(speed);
+            if (isSingleFrame)
+                animationClipPlayable.SetTime(singleFrameTime);
         }
     }
 }

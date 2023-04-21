@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graphPosition:
     serializedVersion: 2
-    x: 384
-    y: 152.8
-    width: 281.60004
-    height: 76.79999
+    x: 714.4
+    y: -2.3999977
+    width: 280.8
+    height: 76.799995
   blendSpacePointLeftBottom:
     position: {x: 0, y: 0}
     clip: {fileID: 8993902097722301239, guid: f971d0ff2056c8f48bb2a3c52a50d25c, type: 3}

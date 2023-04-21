@@ -11,8 +11,8 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     protected readonly T _node;
     protected Port outputPort;
     protected readonly List<Port> inputPorts = new ();
-    protected readonly List<PlayableNode> inputNodes = new ();
-    protected NodeGraphView graphView;
+    // protected readonly List<PlayableNode> inputNodes = new ();
+    protected readonly NodeGraphView graphView;
     
     protected NodeView(T node, int inputPortNum, NodeGraphView graphView)
     {
@@ -55,6 +55,15 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         evt.StopPropagation();
+        
+        evt.menu.AppendAction("Delete", (e) =>
+        {
+            graphView.DeleteNode(this);
+            DisConnectOutputEdge();
+            DisConnectAllInputEdge();
+        });
+        evt.menu.AppendSeparator();
+        
         if (outputPort != null)
         {
             if (outputPort.connected)
@@ -62,19 +71,11 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
                 evt.menu.AppendAction("Disconnect " + outputPort.portName, 
                     (e) =>
                 {
-                    foreach (Edge edge in new List<Edge>(outputPort.connections))
-                    {
-                        // outputPort.Disconnect(edge);
-                        // edge.input.Disconnect(edge);
-                        // graphView.RemoveElement(edge);
-                        //
-                        // if (edge.input.node is INodeView nodeView)
-                        // {
-                        //     nodeView.OnInputPortDisconnect(edge.input);
-                        // }
-                        // OnOutputPortDisconnect();
-                        DisConnectEdge(edge);
-                    }
+                    // foreach (Edge edge in new List<Edge>(outputPort.connections))
+                    // {
+                    //     DisConnectEdge(edge);
+                    // }
+                    DisConnectOutputEdge();
                 });
                 evt.menu.AppendSeparator();
             }
@@ -90,20 +91,30 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
             {
                 foreach (Edge edge in new List<Edge>(inputPort.connections))
                 {
-                    // inputPort.Disconnect(edge);
-                    // edge.output.Disconnect(edge);
-                    // graphView.RemoveElement(edge);
-                    //
-                    // if (edge.output.node is INodeView nodeView)
-                    // {
-                    //     nodeView.OnOutputPortDisconnect();
-                    // }
-                    //
-                    // OnInputPortDisconnect(inputPort);
                     DisConnectEdge(edge);
                 }
             });
             evt.menu.AppendSeparator();
+        }
+    }
+    
+    private void DisConnectOutputEdge()
+    {
+        if (outputPort == null) return;
+        foreach (Edge edge in new List<Edge>(outputPort.connections))
+        {
+            DisConnectEdge(edge);
+        }
+    }
+    
+    private void DisConnectAllInputEdge()
+    {
+        foreach (Port inputPort in inputPorts)
+        {
+            foreach (Edge edge in new List<Edge>(inputPort.connections))
+            {
+                DisConnectEdge(edge);
+            }
         }
     }
     
@@ -185,7 +196,7 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
             .GetFieldsWithCustomAttribute<PlayableInputAttribute>(_node.GetType());
         FieldInfo fieldInfo = fieldsWithCustomAttribute[inputPorts.IndexOf(port)];
         fieldInfo.SetValue(_node, playableNode);
-        inputNodes.Add(playableNode);
+        // inputNodes.Add(playableNode);
     }
 
     public void OnOutputPortConnect()
@@ -193,9 +204,9 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
         // Debug.Log(GetType() + " OnOutputPortConnect");
     }
 
-    public List<PlayableNode> GetPlayableInputNodes()
+    public List<PlayableNode> GetPlayableInputNodesUsingReflection()
     {
-        List<PlayableNode> inputNodes = new();
+        List<PlayableNode> collectInputNodes = new();
         List<FieldInfo> fieldsWithCustomAttribute = Tools
             .GetFieldsWithCustomAttribute<PlayableInputAttribute>(_node.GetType());
         for (int index = 0; index < fieldsWithCustomAttribute.Count; index++)
@@ -204,11 +215,11 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
             object value = fieldInfo.GetValue(_node);
             if (value is PlayableNode node)
             {
-                inputNodes.Add(node);
+                collectInputNodes.Add(node);
             }
         }
-
-        return inputNodes;
+        
+        return collectInputNodes;
     }
 
     public Node GetNode()
@@ -230,7 +241,7 @@ public interface INodeView
 {
     void Save();
 
-    List<PlayableNode> GetPlayableInputNodes();
+    List<PlayableNode> GetPlayableInputNodesUsingReflection();
 
     Node GetNode();
     
