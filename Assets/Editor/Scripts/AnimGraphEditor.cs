@@ -166,7 +166,7 @@ public class AnimGraphEditor : EditorWindow
 
     private void CreateNodeGraphView(VisualElement root)
     {
-        rootGraphView = new NodeGraphView(this)
+        rootGraphView = new NodeGraphView(this, _graphAsset.GetAnimGraph(AnimInstance.ROOT_GRAPH_NAME))
         {
             style = { flexGrow = 1}
         };

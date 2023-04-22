@@ -19,10 +19,12 @@ public class NodeGraphView : GraphView
     private readonly List<INodeView> _nodeViews = new();
     private readonly Dictionary<Type, Type> animNodeToEditorNode = new();
     private Action<INodeInspector> OnNodeViewSelected;
+    private AnimGraph _animGraph;
 
-    public NodeGraphView(AnimGraphEditor editor)
+    public NodeGraphView(AnimGraphEditor editor, AnimGraph animGraph)
     {
         _editor = editor;
+        _animGraph = animGraph;
 
         // 设置节点拖拽
         SelectionDragger dragger = new()
@@ -59,8 +61,27 @@ public class NodeGraphView : GraphView
         CreateBackground();
 
         CreateNodeFromAnimGraphResource();
+        CreateNodeWithOutput();
 
         RegisterCallback<KeyDownEvent>(OnKeyDown);
+    }
+
+    public AnimGraphEditor GetEditor()
+    {
+        return _editor;
+    }
+    
+    private void CreateNodeWithOutput()
+    {
+        foreach (var node in GetAnimGraph().NodeWithoutOutput)
+        {
+            AddNode(node, true);
+        }
+    }
+    
+    public AnimGraph GetAnimGraph()
+    {
+        return _animGraph;
     }
 
     public void AddOnNodeViewSelected(Action<INodeInspector> action)
@@ -140,19 +161,27 @@ public class NodeGraphView : GraphView
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
+        Vector2 localMousePos = contentViewContainer.WorldToLocal(evt.mousePosition);
         foreach (KeyValuePair<Type, Type> pair in animNodeToEditorNode)
         {
             if (pair.Key == typeof(RootPlayableNode))
             {
                 continue;
             }
-            evt.menu.AppendAction("New " +  pair.Key.Name, (action) =>
+
+            void Action(DropdownMenuAction action)
             {
-                ConstructorInfo constructorInfo = pair.Key
-                    .GetConstructor(Type.EmptyTypes);
+                ConstructorInfo constructorInfo = pair.Key.GetConstructor(Type.EmptyTypes);
                 Assert.IsTrue(constructorInfo != null, nameof(constructorInfo) + " != null");
-                AddNode((PlayableNode)constructorInfo.Invoke(new object[] { }), false);
-            }, DropdownMenuAction.AlwaysEnabled);
+                Rect position = new Rect(localMousePos, Vector2.zero);
+                // Rect? position = null;
+                var nodeView = AddNode((PlayableNode)constructorInfo.Invoke(new object[] { }), false, position);
+
+                if (!GetAnimGraph().NodeWithoutOutput.Contains(nodeView.GetPlayableNode())) 
+                    GetAnimGraph().NodeWithoutOutput.Add(nodeView.GetPlayableNode());
+            }
+
+            evt.menu.AppendAction("New " +  pair.Key.Name,  Action, DropdownMenuAction.AlwaysEnabled);
             evt.menu.AppendSeparator();
         }
     }
@@ -186,7 +215,7 @@ public class NodeGraphView : GraphView
         return false;
     }
 
-    public INodeView AddNode(PlayableNode node, bool createInput, Rect? position = null)
+    private INodeView AddNode(PlayableNode node, bool createInput, Rect? position = null)
     {
         if (animNodeToEditorNode.TryGetValue(node.GetType(), out Type editorNodeType))
         {
@@ -228,7 +257,7 @@ public class NodeGraphView : GraphView
                         ConnectNodes(inputNodeView, nodeView, index);
                     }
                 }
-
+                
                 return nodeView;
             }
 

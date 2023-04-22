@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Moyu.Anim;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
 public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
@@ -41,6 +42,11 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
         titleContainer.Add(spacer);
     }
     
+    public NodeGraphView GetGraphView()
+    {
+        return graphView;
+    }
+    
     private void RemoveCollapseButton()
     {
         VisualElement chevronButton = this.Q("collapse-button", (string) null);
@@ -61,6 +67,8 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
                 graphView.DeleteNode(this);
                 DisConnectOutputEdge();
                 DisConnectAllInputEdge();
+                if (graphView.GetAnimGraph().NodeWithoutOutput.Contains(_node))
+                    graphView.GetAnimGraph().NodeWithoutOutput.Remove(_node);
             });
             evt.menu.AppendSeparator();
         }
@@ -191,6 +199,8 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     public void OnOutputPortDisconnect()
     {
         // Debug.Log(GetType() + " OnOutputPortDisconnect");
+        if (!graphView.GetAnimGraph().NodeWithoutOutput.Contains(_node))
+            graphView.GetAnimGraph().NodeWithoutOutput.Add(_node);
     }
 
     public void OnInputPortConnect(Port port, Edge edge)
@@ -208,6 +218,9 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     public void OnOutputPortConnect()
     {
         // Debug.Log(GetType() + " OnOutputPortConnect");
+        Assert.IsNotNull(graphView);
+        if (graphView.GetAnimGraph().NodeWithoutOutput.Contains(_node))
+            graphView.GetAnimGraph().NodeWithoutOutput.Remove(_node);
     }
 
     public void OnNodeSelected()
@@ -278,4 +291,6 @@ public interface INodeView
     void OnNodeSelected();
 
     INodeInspector GetNodeInspector();
+
+    NodeGraphView GetGraphView();
 }

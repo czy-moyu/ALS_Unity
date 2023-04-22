@@ -15,84 +15,120 @@ MonoBehaviour:
   animGraphs:
   - name: RootGraph
     rootNode:
-      rid: 6704167086866563072
+      rid: 6704167103353061383
+    nodeWithoutOutput:
+    - rid: 6704167103353061385
+    - rid: 6704167103353061408
   animParams:
     floatParams: []
   references:
     version: 2
     RefIds:
-    - rid: 6704167086866563072
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6704167103353061383
       type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
       data:
-        id: 99344789-0583-4eb5-9872-8ab9aa7c1392
+        id: f3a96059-b0a9-4c35-b7d9-fa664e432084
         graphPosition:
           serializedVersion: 2
-          x: 87.20001
-          y: -62.4
-          width: 174.40002
+          x: 45.600006
+          y: -39.2
+          width: 174.4
           height: 76.8
         inputNode:
-          rid: 6704167087142076420
-    - rid: 6704167087142076419
+          rid: 6704167103353061384
+    - rid: 6704167103353061384
       type: {class: AnimClipNode, ns: Moyu.Anim, asm: Anim}
       data:
-        id: 39698a68-473b-46af-913b-96039245d833
+        id: 7d505483-f08d-4e1a-8413-3017c47cde9e
         graphPosition:
           serializedVersion: 2
-          x: -443.19998
-          y: 14.400002
+          x: -292
+          y: 48.000004
           width: 149.59999
           height: 76.8
-        _clip: {fileID: 8993902097722301239, guid: aedb3f3ef3164ba4d8338722404c599a,
-          type: 3}
-        speed: 1
-        isSingleFrame: 0
-        singleFrameTime: 0.34
-    - rid: 6704167087142076420
-      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        id: 25c9848d-b569-49f7-a26b-0a5373d54d6e
-        graphPosition:
-          serializedVersion: 2
-          x: -159.99998
-          y: -62.4
-          width: 159.99998
-          height: 100.799995
-        input1:
-          rid: 6704167100838051840
-        input2:
-          rid: 6704167087142076419
-        isBindParam: 0
-        paramName: 
-        alpha: 0
-    - rid: 6704167100838051840
-      type: {class: ModifyBoneNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        id: dd597a9a-0b53-4349-a9f1-9037607f9f29
-        graphPosition:
-          serializedVersion: 2
-          x: -461.59998
-          y: -117.600006
-          width: 168
-          height: 76.8
-        inputNode:
-          rid: 6704167102512365568
-        boneNames:
-        - head
-        blendSpace: 0
-        positionOffset: {x: 0, y: 0.67, z: 0}
-    - rid: 6704167102512365568
-      type: {class: AnimClipNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        id: 173d58d1-b8a5-411f-a3ec-813b770b2d59
-        graphPosition:
-          serializedVersion: 2
-          x: -704
-          y: -117.600006
-          width: 149.6
-          height: 76.8
-        _clip: {fileID: 8993902097722301239, guid: 6832ee17094b45d47b082e3cb8f4ca64,
-          type: 3}
+        _clip: {fileID: 0}
         speed: 1
         isSingleFrame: 0
         singleFrameTime: 0
+    - rid: 6704167103353061385
+      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: 4530e7d0-ef3a-48c9-bc60-5a3e2dc8a32e
+        graphPosition:
+          serializedVersion: 2
+          x: -250.4
+          y: -174.40001
+          width: 160
+          height: 100.8
+        input1:
+          rid: 6704167103353061386
+        input2:
+          rid: 6704167103353061387
+        isBindParam: 0
+        paramName: 
+        alpha: 0
+    - rid: 6704167103353061386
+      type: {class: ModifyBoneNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: 8e843a85-cfba-4a89-b695-9cd23d84eabb
+        graphPosition:
+          serializedVersion: 2
+          x: -528
+          y: -174.40001
+          width: 168
+          height: 76.8
+        inputNode:
+          rid: -2
+        boneNames: []
+        blendSpace: 0
+        positionOffset: {x: 0, y: 0, z: 0}
+    - rid: 6704167103353061387
+      type: {class: BlendSpace2DNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: 0f5edaf8-4bfb-4c46-ad5d-7c760867491c
+        graphPosition:
+          serializedVersion: 2
+          x: -543.19995
+          y: -73.6
+          width: 183.2
+          height: 76.8
+        blendSpacePointLeftBottom:
+          position: {x: 0, y: 0}
+          clip: {fileID: 0}
+        blendSpacePointRightBottom:
+          position: {x: 1, y: 0}
+          clip: {fileID: 0}
+        blendSpacePointLeftTop:
+          position: {x: 0, y: 1}
+          clip: {fileID: 0}
+        blendSpacePointRightTop:
+          position: {x: 1, y: 1}
+          clip: {fileID: 0}
+        currentPos: {x: 0, y: 0}
+        speed: 1
+    - rid: 6704167103353061408
+      type: {class: BlendSpace2DNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: 9a0bf77d-bf40-4b26-85a7-c1e3a124597d
+        graphPosition:
+          serializedVersion: 2
+          x: -5.5999756
+          y: -212.8
+          width: 183.19998
+          height: 76.8
+        blendSpacePointLeftBottom:
+          position: {x: 0, y: 0}
+          clip: {fileID: 0}
+        blendSpacePointRightBottom:
+          position: {x: 1, y: 0}
+          clip: {fileID: 0}
+        blendSpacePointLeftTop:
+          position: {x: 0, y: 1}
+          clip: {fileID: 0}
+        blendSpacePointRightTop:
+          position: {x: 1, y: 1}
+          clip: {fileID: 0}
+        currentPos: {x: 0, y: 0}
+        speed: 1

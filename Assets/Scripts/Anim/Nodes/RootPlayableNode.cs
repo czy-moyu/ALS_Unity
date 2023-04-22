@@ -22,7 +22,7 @@ namespace Moyu.Anim
         public override void UpdatePlayable(float delta, PlayableGraph playableGraph, 
             AnimController animController)
         {
-            inputNode.UpdatePlayable(delta, playableGraph, animController);
+            inputNode?.UpdatePlayable(delta, playableGraph, animController);
         }
     }
 }

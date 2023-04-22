@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Moyu.Anim
@@ -9,6 +7,7 @@ namespace Moyu.Anim
     public class AnimInstance : ScriptableObject
     {
         [SerializeField]
+        [ReadOnly]
         private List<AnimGraph> animGraphs = new ();
         
         [SerializeField]
@@ -42,9 +41,10 @@ namespace Moyu.Anim
             animGraphs.Add(animGraph);
         }
         
+        public const string ROOT_GRAPH_NAME = "RootGraph";
         public RootPlayableNode GetRootNodeOfRootGraph()
         {
-            AnimGraph animGraph = GetAnimGraph("RootGraph");
+            AnimGraph animGraph = GetAnimGraph(ROOT_GRAPH_NAME);
             if (animGraph != null) return animGraph.GetRootNode();
             AnimGraph graph = new AnimGraph();
             AddAnimGraph("RootGraph", graph);

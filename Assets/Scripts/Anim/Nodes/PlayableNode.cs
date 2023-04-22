@@ -35,5 +35,18 @@ namespace Moyu.Anim
         {
             
         }
+
+        // public override int GetHashCode()
+        // {
+        //     return id.GetHashCode();
+        // }
+        public override bool Equals(object obj)
+        {
+            if (obj is PlayableNode node)
+            {
+                return node.id == id;
+            }
+            return false;
+        }
     }
 }

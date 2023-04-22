@@ -23,6 +23,7 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
         AddToClassList("node-inspector");
         AddSeparator(5);
         AddTextField("Type", nodeView.GetType().Name, false);
+        nodeView.GetGraphView().GetEditor().SaveChanges();
         AddAllSerializedFieldsToView();
     }
 
@@ -41,10 +42,13 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
             {
                 childField.SetValue(nodeView.GetPlayableNode(), newValue);
             }
-
+    
+            // Debug.Log("show:" + childField.Name);
+            // Debug.Log("type:" + value.GetType());
             switch (value)
             {
                 case Object o:
+                    // Debug.Log("aaaaaaaa");
                     AddObjectField(FormatLabel(childField.Name), o, SetValue);
                     break;
                 case float f:

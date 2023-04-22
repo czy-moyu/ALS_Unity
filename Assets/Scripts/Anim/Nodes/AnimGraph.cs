@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Moyu.Anim;
 using UnityEditor;
 using UnityEngine;
@@ -16,8 +17,20 @@ public class AnimGraph
     }
 
     [SerializeReference]
+    [ReadOnly]
     private RootPlayableNode rootNode;
     
+#if UNITY_EDITOR
+    [SerializeReference]
+    [ReadOnly]
+    private List<PlayableNode> nodeWithoutOutput = new ();
+    
+    public List<PlayableNode> NodeWithoutOutput
+    {
+        get { return nodeWithoutOutput ??= new List<PlayableNode>(); }
+    }
+#endif
+
     public RootPlayableNode GetRootNode()
     {
         if (rootNode == null)
