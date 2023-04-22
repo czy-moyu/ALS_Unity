@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using GBG.AnimationGraph.Component;
 using Moyu.Anim;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Moyu.Anim
         private PlayableNode inputNode;
     
         [SerializeField]
-        private string[] boneNames;
+        private List<string> boneNames = new();
     
         [SerializeField]
         private BlendSpace blendSpace;
@@ -27,8 +28,8 @@ namespace Moyu.Anim
     
         public override Playable GetPlayable(PlayableGraph playableGraph, AnimController animController)
         {
-            int[] boneNameHashs = new int[boneNames.Length];
-            for (int i = 0; i < boneNames.Length; ++i)
+            int[] boneNameHashs = new int[boneNames.Count];
+            for (int i = 0; i < boneNames.Count; ++i)
             {
                 boneNameHashs[i] = Animator.StringToHash(boneNames[i]);
             }

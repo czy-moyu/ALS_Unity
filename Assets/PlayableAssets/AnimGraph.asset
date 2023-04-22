@@ -21,6 +21,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 6704167086866563072
       type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
       data:
@@ -33,21 +35,6 @@ MonoBehaviour:
           height: 76.8
         inputNode:
           rid: 6704167087142076420
-    - rid: 6704167087142076418
-      type: {class: AnimClipNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        id: e516efe6-ed87-460a-9e37-7a6852faff65
-        graphPosition:
-          serializedVersion: 2
-          x: -458.4
-          y: -120
-          width: 149.6
-          height: 76.799995
-        _clip: {fileID: 8993902097722301239, guid: 6832ee17094b45d47b082e3cb8f4ca64,
-          type: 3}
-        speed: 1
-        isSingleFrame: 0
-        singleFrameTime: 0
     - rid: 6704167087142076419
       type: {class: AnimClipNode, ns: Moyu.Anim, asm: Anim}
       data:
@@ -69,14 +56,29 @@ MonoBehaviour:
         id: 25c9848d-b569-49f7-a26b-0a5373d54d6e
         graphPosition:
           serializedVersion: 2
-          x: -193.59999
+          x: -159.99998
           y: -62.4
-          width: 160.00002
+          width: 160.8
           height: 100.799995
         input1:
-          rid: 6704167087142076418
+          rid: 6704167100838051840
         input2:
           rid: 6704167087142076419
         isBindParam: 0
         paramName: 
         alpha: 0
+    - rid: 6704167100838051840
+      type: {class: ModifyBoneNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: dd597a9a-0b53-4349-a9f1-9037607f9f29
+        graphPosition:
+          serializedVersion: 2
+          x: -461.59998
+          y: -117.600006
+          width: 168
+          height: 76.8
+        inputNode:
+          rid: -2
+        boneNames: []
+        blendSpace: 0
+        positionOffset: {x: 0, y: 0, z: 0}

@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
+using Toggle = UnityEngine.UIElements.Toggle;
 
 public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
 {
@@ -30,12 +34,12 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
             object[] customAttributes = childField.GetCustomAttributes(typeof(SerializeField), true);
             if (customAttributes.Length <= 0) continue;
             object value = childField.GetValue(nodeView.GetPlayableNode());
-            
-            Action<object> SetValue = (newValue) =>
+
+            void SetValue(object newValue)
             {
                 childField.SetValue(nodeView.GetPlayableNode(), newValue);
-            };
-            
+            }
+
             switch (value)
             {
                 case Object o:
@@ -48,7 +52,16 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
                     AddBoolField(FormatLabel(childField.Name), b, true, SetValue);
                     break;
                 case string s:
-                    AddTextField(FormatLabel(childField.Name), s, true, SetValue);
+                    AddTextField(FormatLabel(childField.Name), s, true, (Action<object>)SetValue);
+                    break;
+                case Vector3 v3:
+                    AddVector3Field(FormatLabel(childField.Name), v3, true, SetValue);
+                    break;
+                case Vector2 v2:
+                    AddVector2Field(FormatLabel(childField.Name), v2, true, SetValue);
+                    break;
+                case BlendSpace blendSpace:
+                    AddEnumField(FormatLabel(childField.Name), blendSpace, true, SetValue);
                     break;
             }
         }
@@ -59,6 +72,47 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
         var replace = label.Replace("_", "");
         string output = replace[..1].ToUpper() + replace[1..];
         return output;
+    }
+
+    private void AddEnumField<TEnum>(string label, TEnum value, bool enable, Action<object> SetValueFunc) where TEnum : Enum
+    {
+        EnumField enumField = new EnumField(label, value);
+        enumField.labelElement.style.minWidth = StyleKeyword.Auto;
+        enumField.labelElement.style.maxWidth = StyleKeyword.Auto;
+        enumField.labelElement.style.width = FieldLabelWidth;
+        if (SetValueFunc != null)
+            enumField.RegisterValueChangedCallback(evt => SetValueFunc(evt.newValue));
+        enumField.SetEnabled(enable);
+        Add(enumField);
+        AddSeparator(5);
+    }
+    
+    private void AddVector2Field(string label, Vector2 value, bool enable, Action<object> SetValueFunc)
+    {
+        Vector2Field vector2Field = new Vector2Field(label);
+        vector2Field.labelElement.style.minWidth = StyleKeyword.Auto;
+        vector2Field.labelElement.style.maxWidth = StyleKeyword.Auto;
+        vector2Field.labelElement.style.width = FieldLabelWidth;
+        vector2Field.value = value;
+        if (SetValueFunc != null)
+            vector2Field.RegisterValueChangedCallback(evt => SetValueFunc(evt.newValue));
+        vector2Field.SetEnabled(enable);
+        Add(vector2Field);
+        AddSeparator(5);
+    }
+    
+    private void AddVector3Field(string label, Vector3 value, bool enable, Action<object> SetValueFunc)
+    {
+        Vector3Field vector3Field = new Vector3Field(label);
+        vector3Field.labelElement.style.minWidth = StyleKeyword.Auto;
+        vector3Field.labelElement.style.maxWidth = StyleKeyword.Auto;
+        vector3Field.labelElement.style.width = FieldLabelWidth;
+        vector3Field.value = value;
+        if (SetValueFunc != null)
+            vector3Field.RegisterValueChangedCallback(evt => SetValueFunc(evt.newValue));
+        vector3Field.SetEnabled(enable);
+        Add(vector3Field);
+        AddSeparator(5);
     }
     
     private void AddBoolField(string label, bool value, bool enable, Action<object> SetValueFunc)

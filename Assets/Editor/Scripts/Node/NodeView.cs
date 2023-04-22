@@ -1,18 +1,16 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Moyu.Anim;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
 {
-    protected readonly T _node;
-    protected Port outputPort;
-    protected readonly List<Port> inputPorts = new ();
+    private readonly T _node;
+    private Port outputPort;
+    private readonly List<Port> inputPorts = new ();
     // protected readonly List<PlayableNode> inputNodes = new ();
-    protected readonly NodeGraphView graphView;
+    private readonly NodeGraphView graphView;
     
     protected NodeView(T node, int inputPortNum, NodeGraphView graphView)
     {

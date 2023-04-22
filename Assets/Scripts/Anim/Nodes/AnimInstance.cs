@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Moyu.Anim
@@ -11,12 +13,16 @@ namespace Moyu.Anim
         
         [SerializeField]
         private AnimParams animParams;
-    
+
         public AnimParams GetAnimParams()
         {
             return animParams;
         }
-        
+
+        private void OnEnable()
+        {
+        }
+
         public AnimGraph GetAnimGraph(string graphName)
         {
             for (var index = 0; index < animGraphs.Count; index++)

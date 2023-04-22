@@ -166,6 +166,7 @@ public class NodeGraphView : GraphView
         {
             BindAnimNode myAttribute = (BindAnimNode)Attribute
                 .GetCustomAttribute(editorNodeType, typeof(BindAnimNode));
+            Assert.IsNotNull(myAttribute);
             animNodeToEditorNode.Add(myAttribute.type, editorNodeType);
         }
 
