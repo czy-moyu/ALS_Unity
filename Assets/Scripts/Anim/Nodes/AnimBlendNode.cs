@@ -56,6 +56,7 @@ namespace Moyu.Anim
             }
             else
             {
+                alpha = Mathf.Clamp01(alpha);
                 animationMixerPlayable.SetInputWeight(0, 1 - alpha);
                 animationMixerPlayable.SetInputWeight(1, alpha);
             }

@@ -21,8 +21,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 6704167086866563072
       type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
       data:
@@ -58,7 +56,7 @@ MonoBehaviour:
           serializedVersion: 2
           x: -159.99998
           y: -62.4
-          width: 160.8
+          width: 159.99998
           height: 100.799995
         input1:
           rid: 6704167100838051840
@@ -78,7 +76,23 @@ MonoBehaviour:
           width: 168
           height: 76.8
         inputNode:
-          rid: -2
-        boneNames: []
+          rid: 6704167102512365568
+        boneNames:
+        - head
         blendSpace: 0
-        positionOffset: {x: 0, y: 0, z: 0}
+        positionOffset: {x: 0, y: 0.67, z: 0}
+    - rid: 6704167102512365568
+      type: {class: AnimClipNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        id: 173d58d1-b8a5-411f-a3ec-813b770b2d59
+        graphPosition:
+          serializedVersion: 2
+          x: -704
+          y: -117.600006
+          width: 149.6
+          height: 76.8
+        _clip: {fileID: 8993902097722301239, guid: 6832ee17094b45d47b082e3cb8f4ca64,
+          type: 3}
+        speed: 1
+        isSingleFrame: 0
+        singleFrameTime: 0

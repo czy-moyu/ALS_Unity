@@ -5,6 +5,8 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
@@ -63,6 +65,9 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
                 case BlendSpace blendSpace:
                     AddEnumField(FormatLabel(childField.Name), blendSpace, true, SetValue);
                     break;
+                case List<string> list:
+                    AddStringListView(FormatLabel(childField.Name), list);
+                    break;
             }
         }
     }
@@ -72,6 +77,53 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
         var replace = label.Replace("_", "");
         string output = replace[..1].ToUpper() + replace[1..];
         return output;
+    }
+
+    private void AddStringListView(string label, List<string> data)
+    {
+        var inputListViewLabel = new Label(label)
+        {
+            style =
+            {
+                height = 20,
+                marginLeft = 3,
+                marginRight = 3,
+                unityTextAlign = TextAnchor.MiddleLeft,
+            }
+        };
+        Add(inputListViewLabel);
+        var listView = new ListView
+        {
+            reorderable = true,
+            reorderMode = ListViewReorderMode.Animated,
+            makeItem = () =>
+            {
+                var visualElement = new TextField();
+                return visualElement;
+            },
+            bindItem = (element, i) =>
+            {
+                element.parent.style.justifyContent = new StyleEnum<Justify>(Justify.Center);
+                element.parent.style.alignItems = Align.Center;
+                element.style.width = Length.Percent(100);
+                element.style.paddingTop = 0;
+                var textField = (TextField)element;
+                textField.labelElement.style.minWidth = StyleKeyword.Auto;
+                textField.labelElement.style.maxWidth = StyleKeyword.Auto;
+                textField.labelElement.style.width = Length.Percent(30);
+                textField.label = "Element " + i;
+                textField.value = data[i];
+                textField.RegisterValueChangedCallback(delegate(ChangeEvent<string> evt)
+                {
+                    data[i] = evt.newValue;
+                });
+            },
+            selectionType = SelectionType.Single,
+            showAddRemoveFooter = true,
+            itemsSource = data,
+            showBorder = true
+        };
+        Add(listView);
     }
 
     private void AddEnumField<TEnum>(string label, TEnum value, bool enable, Action<object> SetValueFunc) where TEnum : Enum
@@ -166,12 +218,25 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
         textField.value = value;
         if (onValueChanged != null)
             textField.RegisterValueChangedCallback(onValueChanged);
-        textField.SetEnabled(enable);
+        textField.isReadOnly = !enable;
         Add(textField);
         AddSeparator(5);
+        textField.RegisterCallback<MouseDownEvent>(OnMouseDownTwice);
+    }
+
+    private void OnMouseDownTwice(MouseDownEvent evt)
+    {
+        // 检查点击次数是否为2，以确定是否是双击
+        if (evt.clickCount != 2 || evt.button != (int)PointerEventData.InputButton.Left) return;
+        var monoScript = Tools.GetMonoScriptFromType(nodeView.GetType());
+        Assert.IsNotNull(monoScript);
+        // 执行双击操作
+        string scriptPath = AssetDatabase.GetAssetPath(monoScript);
+        Debug.Log(scriptPath);
+        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(scriptPath, 1);
     }
     
-    protected void AddObjectField(string label, Object value, Action<object> SetValueFunc)
+    private void AddObjectField(string label, Object value, Action<object> SetValueFunc)
     {
         ObjectField clipField = new ObjectField(label);
         clipField.objectType = value.GetType();
@@ -185,7 +250,7 @@ public class NodeInspector<T> : GraphElement, INodeInspector where T : INodeView
         AddSeparator(5);
     }
 
-    protected void AddSeparator(int height)
+    private void AddSeparator(int height)
     {
         var separator = new HorizontalSeparatorVisualElement(height);
         Add(separator);

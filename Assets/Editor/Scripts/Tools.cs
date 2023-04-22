@@ -55,6 +55,21 @@ public static class Tools
         ).ToList();
     }
     
+    public static MonoScript GetMonoScriptFromType(Type type)
+    {
+        string[] guids = AssetDatabase.FindAssets("t:MonoScript");
+        foreach (string guid in guids)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            MonoScript monoScript = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
+            if (monoScript != null && monoScript.GetClass() == type)
+            {
+                return monoScript;
+            }
+        }
+        return null;
+    }
+    
     public static List<FieldInfo> GetFieldsWithCustomAttribute<T>(Type objType) where T : Attribute
     {
         List<FieldInfo> fieldsWithAttribute = new();
