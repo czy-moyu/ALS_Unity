@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Moyu.Anim;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -117,5 +119,26 @@ public class HorizontalSeparatorVisualElement : VisualElement
         style.backgroundColor = new Color(0.3f, 0.3f, 0.3f, 0f);
         style.height = height;
         style.flexGrow = 1;
+    }
+}
+
+// 显示PlayableNode的实际类型
+[CustomPropertyDrawer(typeof(PlayableNode), true)]
+public class MyCustomClassDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        // 获取当前对象的类型
+        Type objectType = fieldInfo.FieldType;
+
+        // 在这里添加自定义的绘制逻辑
+        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), 
+            new GUIContent(property.displayName + " (" + objectType.Name + ")"));
+
+        EditorGUI.PropertyField(position, property, GUIContent.none);
+
+        EditorGUI.EndProperty();
     }
 }

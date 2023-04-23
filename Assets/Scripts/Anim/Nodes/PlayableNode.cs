@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Playables;
+using SGuid = System.Guid;
 
 namespace Moyu.Anim
 {
@@ -9,9 +10,9 @@ namespace Moyu.Anim
     {
         [SerializeField]
         [ReadOnly]
-        private string id = Guid.NewGuid().ToString();
+        private string guid = SGuid.NewGuid().ToString();
         
-        public string Id => id;
+        public string Guid => guid;
         
 #if UNITY_EDITOR
     [SerializeField]
@@ -38,15 +39,16 @@ namespace Moyu.Anim
 
         // public override int GetHashCode()
         // {
-        //     return id.GetHashCode();
+        //     return guid.GetHashCode();
         // }
-        public override bool Equals(object obj)
-        {
-            if (obj is PlayableNode node)
-            {
-                return node.id == id;
-            }
-            return false;
-        }
+        //
+        // public override bool Equals(object obj)
+        // {
+        //     if (obj is PlayableNode node)
+        //     {
+        //         return node.guid == guid;
+        //     }
+        //     return false;
+        // }
     }
 }
