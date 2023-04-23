@@ -13,8 +13,9 @@ using Object = UnityEngine.Object;
 public class AnimGraphEditor : EditorWindow
 {
     private AnimInstance _graphAsset;
-    private NodeGraphView rootGraphView;
+    private NodeGraphView currentGraphView;
     private TripleSplitterRowView tripleSplitterRowView;
+    private AnimGraphListView _animGraphListView;
     
     [OnOpenAsset]
     public static bool OpenGraphAsset(int instanceId, int line)
@@ -90,6 +91,12 @@ public class AnimGraphEditor : EditorWindow
             }
         };
         tripleSplitterRowView.LeftBottomPane.Add(inspectorToggle);
+        _animGraphListView = new AnimGraphListView(_graphAsset.GetAnimGraphs());
+        tripleSplitterRowView.LeftBottomPane.Add(_animGraphListView);
+        _animGraphListView.AddOnIndexChangedEvent(delegate(int index)
+        {
+            CreateNodeGraphView(_graphAsset.GetAnimGraphs()[index].Name);
+        });
     }
 
     private void CreateParameterView()
@@ -151,7 +158,7 @@ public class AnimGraphEditor : EditorWindow
 
     private void Update()
     {
-        rootGraphView.Update();
+        currentGraphView.Update();
     }
 
     private void CreateToolBar()
@@ -183,7 +190,7 @@ public class AnimGraphEditor : EditorWindow
     public override void SaveChanges()
     {
         base.SaveChanges();
-        rootGraphView.SaveChanges();
+        currentGraphView.SaveChanges();
         EditorUtility.SetDirty(_graphAsset);
         AssetDatabase.SaveAssetIfDirty(_graphAsset);
     }
@@ -195,18 +202,23 @@ public class AnimGraphEditor : EditorWindow
         return button;
     }
 
-    private void CreateNodeGraphView()
+    private void CreateNodeGraphView(string graphName = AnimInstance.ROOT_GRAPH_NAME)
     {
-        tripleSplitterRowView = new TripleSplitterRowView(
-            new Vector2(200, 400), new Vector2(200, 400));
-        rootVisualElement.Add(tripleSplitterRowView);
-        rootGraphView = new NodeGraphView(this, _graphAsset.GetAnimGraph(AnimInstance.ROOT_GRAPH_NAME))
+        if (tripleSplitterRowView == null)
+        {
+            tripleSplitterRowView = new TripleSplitterRowView(
+                new Vector2(200, 400), new Vector2(200, 400));
+            rootVisualElement.Add(tripleSplitterRowView);
+        }
+        
+        currentGraphView = new NodeGraphView(this, _graphAsset.GetAnimGraph(graphName))
         {
             style = { flexGrow = 1}
         };
-        tripleSplitterRowView.MiddlePane.Add(rootGraphView);
+        tripleSplitterRowView.MiddlePane.Clear();
+        tripleSplitterRowView.MiddlePane.Add(currentGraphView);
         // add on node view selected callback
-        rootGraphView.AddOnNodeViewSelected(OnNodeViewSelected);
+        currentGraphView.AddOnNodeViewSelected(OnNodeViewSelected);
     }
 
     private void OnNodeViewSelected(INodeInspector inspector)

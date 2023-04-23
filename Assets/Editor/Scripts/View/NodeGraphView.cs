@@ -188,7 +188,7 @@ public class NodeGraphView : GraphView
 
     private void CreateNodeFromAnimGraphResource()
     {
-        RootPlayableNode rootPlayableNode = _editor.GetGraphAsset().GetRootNodeOfRootGraph();
+        RootPlayableNode rootPlayableNode = _animGraph.GetRootNode();
 
         List<Type> typesImplementingInterface = Tools.GetTypesImplementingInterface<INodeView>();
         foreach (Type editorNodeType in typesImplementingInterface)

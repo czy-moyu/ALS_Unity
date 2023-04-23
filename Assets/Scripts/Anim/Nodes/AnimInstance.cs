@@ -21,6 +21,11 @@ namespace Moyu.Anim
         private void OnEnable()
         {
         }
+        
+        public List<AnimGraph> GetAnimGraphs()
+        {
+            return animGraphs;
+        }
 
         public AnimGraph GetAnimGraph(string graphName)
         {

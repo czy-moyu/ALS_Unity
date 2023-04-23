@@ -21,6 +21,10 @@ MonoBehaviour:
     - rid: 6704167103353061387
     - rid: 3591785058845851648
     - rid: 3591785058845851649
+  - name: AnimGraph1
+    rootNode:
+      rid: -2
+    nodeWithoutOutput: []
   animParams:
     floatParams: []
   references:
