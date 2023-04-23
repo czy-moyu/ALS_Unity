@@ -68,37 +68,68 @@ public class AnimGraphEditor : EditorWindow
     private void ConstructGraphView()
     {
         CreateToolBar();
-        tripleSplitterRowView = new TripleSplitterRowView(
-            new Vector2(200, 400), new Vector2(200, 400));
-        rootVisualElement.Add(tripleSplitterRowView);
 
-        InitInspectorView();
-        CreateNodeGraphView(tripleSplitterRowView.MiddlePane);
+        CreateNodeGraphView();
+        CreateInspectorView();
+        CreateParameterView();
+        CreateGraphListView();
     }
     
-    private void InitInspectorView()
+    private void CreateGraphListView()
+    {
+        var inspectorToggle = new CustomToolbarToggle
+        {
+            text = "AnimGraphs",
+            value = false,
+            style =
+            {
+                borderBottomWidth = 0,
+                borderTopWidth = 0,
+                borderLeftWidth = 0,
+                borderRightWidth = 0
+            }
+        };
+        tripleSplitterRowView.LeftBottomPane.Add(inspectorToggle);
+    }
+
+    private void CreateParameterView()
+    {
+        var inspectorToggle = new CustomToolbarToggle
+        {
+            text = "Parameters",
+            value = false,
+            style =
+            {
+                borderBottomWidth = 0,
+                borderTopWidth = 0,
+                borderLeftWidth = 0,
+                borderRightWidth = 0
+            }
+        };
+        tripleSplitterRowView.LeftTopPane.Add(inspectorToggle);
+    }
+    
+    private void CreateInspectorView()
     {
         var inspectorToggle = new CustomToolbarToggle
         {
             text = "Inspector",
             value = false,
+            style =
+            {
+                borderBottomWidth = 0,
+                borderTopWidth = 0,
+                borderLeftWidth = 0,
+                borderRightWidth = 0
+            }
         };
-        inspectorToggle.style.borderBottomWidth = 0;
-        inspectorToggle.style.borderTopWidth = 0;
-        inspectorToggle.style.borderLeftWidth = 0;
-        inspectorToggle.style.borderRightWidth = 0;
         tripleSplitterRowView.RightPane.Add(inspectorToggle);
         tripleSplitterRowView.RightPane.style.paddingLeft = 5;
     }
 
-    private void OnBeforeAssemblyReload()
+    private static void OnBeforeAssemblyReload()
     {
-        // Assert.IsNotNull(rootGraphView);
-        // rootGraphView.SaveChanges();
-        // if (EditorUtility.DisplayDialog("Warning", msg, "Save", "Discard"))
-        // {
-        //     
-        // }
+        
     }
 
     private void OnAfterAssemblyReload()
@@ -157,20 +188,24 @@ public class AnimGraphEditor : EditorWindow
         AssetDatabase.SaveAssetIfDirty(_graphAsset);
     }
     
-    private Button CreateCustomToolbarButton(string text, Action onClick)
+    private static Button CreateCustomToolbarButton(string text, Action onClick)
     {
         var button = new Button(onClick) { text = text };
         button.AddToClassList("custom-toolbar-button");
         return button;
     }
 
-    private void CreateNodeGraphView(VisualElement root)
+    private void CreateNodeGraphView()
     {
+        tripleSplitterRowView = new TripleSplitterRowView(
+            new Vector2(200, 400), new Vector2(200, 400));
+        rootVisualElement.Add(tripleSplitterRowView);
         rootGraphView = new NodeGraphView(this, _graphAsset.GetAnimGraph(AnimInstance.ROOT_GRAPH_NAME))
         {
             style = { flexGrow = 1}
         };
-        root.Add(rootGraphView);
+        tripleSplitterRowView.MiddlePane.Add(rootGraphView);
+        // add on node view selected callback
         rootGraphView.AddOnNodeViewSelected(OnNodeViewSelected);
     }
 
@@ -178,7 +213,7 @@ public class AnimGraphEditor : EditorWindow
     {
         // Debug.Log(inspector);
         tripleSplitterRowView.RightPane.Clear();
-        InitInspectorView();
+        CreateInspectorView();
         tripleSplitterRowView.RightPane.Add(inspector as VisualElement);
     }
 }

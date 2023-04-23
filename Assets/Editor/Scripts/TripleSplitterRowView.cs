@@ -8,15 +8,21 @@ namespace GBG.AnimationGraph.Editor.ViewElement
 {
     public class TripleSplitterRowView : VisualElement
     {
-        public VisualElement LeftPane { get; }
+        private VisualElement LeftPane { get; }
 
         public VisualElement MiddlePane { get; }
 
         public VisualElement RightPane { get; }
 
-        public VisualElement LeftSplitter { get; }
+        private VisualElement LeftSplitter { get; }
 
-        public VisualElement RightSplitter { get; }
+        private VisualElement RightSplitter { get; }
+
+        private TwoSplitterRowView twoSplitterRowView;
+
+        public VisualElement LeftTopPane => twoSplitterRowView.TopElement;
+        
+        public VisualElement LeftBottomPane => twoSplitterRowView.BottomElement;
 
 
         //  RegisterCallback<GeometryChangedEvent>(OnSizeChanged);
@@ -46,6 +52,8 @@ namespace GBG.AnimationGraph.Editor.ViewElement
                 }
             };
             Add(LeftPane);
+            twoSplitterRowView = new TwoSplitterRowView(200);
+            LeftPane.Add(twoSplitterRowView);
 
             // Left splitter
             LeftSplitter = new VisualElement
@@ -185,7 +193,7 @@ namespace GBG.AnimationGraph.Editor.ViewElement
         #endregion
 
 
-        private static Cursor LoadCursor(MouseCursor cursorStyle)
+        public static Cursor LoadCursor(MouseCursor cursorStyle)
         {
             object boxed = new Cursor();
             typeof(Cursor).GetProperty("defaultCursorId", BindingFlags.NonPublic | BindingFlags.Instance)

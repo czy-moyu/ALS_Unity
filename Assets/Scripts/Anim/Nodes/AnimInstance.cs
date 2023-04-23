@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Moyu.Anim
 {
-    [CreateAssetMenu(fileName = "AnimGraph", menuName = "PlayableNode/AnimGraph", order = 0)]
+    [CreateAssetMenu(fileName = "AnimInstance", menuName = "PlayableNode/AnimInstance", order = 0)]
     public class AnimInstance : ScriptableObject
     {
         [SerializeField]
@@ -46,7 +46,7 @@ namespace Moyu.Anim
         {
             AnimGraph animGraph = GetAnimGraph(ROOT_GRAPH_NAME);
             if (animGraph != null) return animGraph.GetRootNode();
-            AnimGraph graph = new AnimGraph();
+            AnimGraph graph = new();
             AddAnimGraph("RootGraph", graph);
             animGraph = graph;
             return animGraph.GetRootNode();

@@ -19,7 +19,7 @@ public class NodeGraphView : GraphView
     private readonly List<INodeView> _nodeViews = new();
     private readonly Dictionary<Type, Type> animNodeToEditorNode = new();
     private Action<INodeInspector> OnNodeViewSelected;
-    private AnimGraph _animGraph;
+    private readonly AnimGraph _animGraph;
 
     public NodeGraphView(AnimGraphEditor editor, AnimGraph animGraph)
     {
@@ -118,7 +118,7 @@ public class NodeGraphView : GraphView
         var gridStyleSheet = Resources.Load<StyleSheet>("GridBackground");
         styleSheets.Add(gridStyleSheet);
         // 创建背景
-        GridBackground gridBackground = new GridBackground();
+        GridBackground gridBackground = new();
         Insert(0, gridBackground);
     }
     
