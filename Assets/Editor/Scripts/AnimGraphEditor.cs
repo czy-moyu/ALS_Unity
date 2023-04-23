@@ -12,6 +12,7 @@ using Object = UnityEngine.Object;
 
 public class AnimGraphEditor : EditorWindow
 {
+    [SerializeField]
     private AnimInstance _graphAsset;
     private NodeGraphView currentGraphView;
     private TripleSplitterRowView tripleSplitterRowView;
@@ -64,12 +65,20 @@ public class AnimGraphEditor : EditorWindow
         
         AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
         AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
+
+        if (_graphAsset != null)
+        {
+            ConstructGraphView();
+        }
     }
 
     private void ConstructGraphView()
     {
+        currentGraphView = null;
+        tripleSplitterRowView = null;
+        _animGraphListView = null;
+        rootVisualElement.Clear();
         CreateToolBar();
-
         CreateNodeGraphView();
         CreateInspectorView();
         CreateParameterView();
@@ -91,7 +100,7 @@ public class AnimGraphEditor : EditorWindow
             }
         };
         tripleSplitterRowView.LeftBottomPane.Add(inspectorToggle);
-        _animGraphListView = new AnimGraphListView(_graphAsset.GetAnimGraphs());
+        _animGraphListView = new AnimGraphListView(this);
         tripleSplitterRowView.LeftBottomPane.Add(_animGraphListView);
         _animGraphListView.AddOnIndexChangedEvent(delegate(int index)
         {
@@ -158,7 +167,7 @@ public class AnimGraphEditor : EditorWindow
 
     private void Update()
     {
-        currentGraphView.Update();
+        currentGraphView?.Update();
     }
 
     private void CreateToolBar()

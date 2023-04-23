@@ -6,49 +6,49 @@ using UnityEngine.UIElements;
 
 public class AnimGraphListView : GraphElement
 {
-    private List<AnimGraph> _graphs;
+    private readonly AnimGraphEditor _editor;
     private int _selectedIndex = 0;
-    private ListView listView;
-    private event OnIndexChangedDelegate OnIndexChangedEvent;
-    public delegate void OnIndexChangedDelegate(int newListIndex);
+    private readonly ListView listView;
+    private event OnSelectedDelegate OnSelectedEvent;
+    public delegate void OnSelectedDelegate(int newListIndex);
 
-    public AnimGraphListView(List<AnimGraph> graphs)
+    public AnimGraphListView(AnimGraphEditor editor)
     {
-        _graphs = graphs;
+        _editor = editor;
         listView = new()
         {
             reorderable = false,
             reorderMode = ListViewReorderMode.Animated,
             selectionType = SelectionType.Single,
             showAddRemoveFooter = true,
-            itemsSource = _graphs,
+            itemsSource = _editor.GetGraphAsset().GetAnimGraphs(),
             showBorder = true,
             makeItem = MakeItem,
             bindItem = BindItem,
         };
         Add(listView);
     }
-    
-    public void AddOnIndexChangedEvent(OnIndexChangedDelegate onIndexChangedEvent)
+
+    public void AddOnIndexChangedEvent(OnSelectedDelegate onIndexChangedEvent)
     {
-        OnIndexChangedEvent += onIndexChangedEvent;
+        OnSelectedEvent += onIndexChangedEvent;
     }
     
-    public void RemoveOnIndexChangedEvent(OnIndexChangedDelegate onIndexChangedEvent)
+    public void RemoveOnIndexChangedEvent(OnSelectedDelegate onIndexChangedEvent)
     {
-        OnIndexChangedEvent -= onIndexChangedEvent;
+        OnSelectedEvent -= onIndexChangedEvent;
     }
 
     private void BindItem(VisualElement element, int index)
     {
         var textField = (TextField) element;
-        AnimGraph animGraph = _graphs[index];
+        AnimGraph animGraph = _editor.GetGraphAsset().GetAnimGraphs()[index];
         if (animGraph == null)
         {
-            animGraph = _graphs[index] = new AnimGraph();
+            animGraph = _editor.GetGraphAsset().GetAnimGraphs()[index] = new AnimGraph();
             animGraph.Name = "AnimGraph" + index;
         }
-        textField.value = animGraph.Name;
+        textField.SetValueWithoutNotify(animGraph.Name);
         textField.SetEnabled(false);
         
         element.parent.style.justifyContent = new StyleEnum<Justify>(Justify.Center);
@@ -56,17 +56,57 @@ public class AnimGraphListView : GraphElement
         element.style.paddingTop = 0;
         if (_selectedIndex == index)
         {
-            element.parent.style.backgroundColor = new StyleColor(new Color(0.32f, 0.32f, 0.32f));
+            element.parent.style.backgroundColor = 
+                new StyleColor(new Color(0.32f, 0.32f, 0.32f));
         }
         else
         {
-            element.parent.style.backgroundColor = new StyleColor(new Color(0.2745f, 0.2745f, 0.2745f));
+            element.parent.style.backgroundColor = 
+                new StyleColor(new Color(0.2745f, 0.2745f, 0.2745f));
         }
         textField.style.width = Length.Percent(30);
-        textField.parent.RegisterCallback<MouseDownEvent>(evt =>
+
+        void GraphNameMouseEvent(MouseDownEvent evt)
         {
             OnListItemClickTwice(evt, index);
-        });
+        }
+
+        textField.parent.RegisterCallback<MouseDownEvent>(GraphNameMouseEvent);
+
+        void Callback(ContextualMenuPopulateEvent evt)
+        {
+            BuildGraphNameContextualMenu(evt, textField);
+        }
+
+        textField.parent.RegisterCallback<ContextualMenuPopulateEvent>(Callback);
+
+        void EventCallback(FocusOutEvent evt)
+        {
+            textField.SetEnabled(false);
+        }
+
+        textField.RegisterCallback<FocusOutEvent>(EventCallback);
+
+        void Callback1(ChangeEvent<string> evt)
+        {
+            animGraph.Name = evt.newValue;
+        }
+
+        textField.RegisterValueChangedCallback(Callback1);
+    }
+    
+    private static void BuildGraphNameContextualMenu(ContextualMenuPopulateEvent evt, TextField textField)
+    {
+        // evt.StopPropagation();
+        for (int i = 0; i < evt.menu.MenuItems().Count; i++)
+        {
+            evt.menu.RemoveItemAt(0);
+        }
+        evt.menu.AppendAction("Rename", action =>
+        {
+            textField.SetEnabled(true);
+            textField.Focus();
+        }, DropdownMenuAction.AlwaysEnabled);
     }
 
     private void OnListItemClickTwice(MouseDownEvent evt, int itemIndex)
@@ -75,12 +115,13 @@ public class AnimGraphListView : GraphElement
         if (evt.clickCount != 2 || evt.button != (int)PointerEventData.InputButton.Left) return;
         _selectedIndex = itemIndex;
         listView.Rebuild();
-        OnIndexChanged(itemIndex);
+        OnSelect(itemIndex);
+        // Debug.Log("OnListItemClickTwice: ");
     }
 
-    private void OnIndexChanged(int newListIndex)
+    private void OnSelect(int newListIndex)
     {
-        OnIndexChangedEvent?.Invoke(newListIndex);
+        OnSelectedEvent?.Invoke(newListIndex);
     }
 
     private static VisualElement MakeItem()
