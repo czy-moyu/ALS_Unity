@@ -104,7 +104,9 @@ public class AnimGraphEditor : EditorWindow
         tripleSplitterRowView.LeftBottomPane.Add(_animGraphListView);
         _animGraphListView.AddOnIndexChangedEvent(delegate(int index)
         {
-            CreateNodeGraphView(_graphAsset.GetAnimGraphs()[index].Name);
+            var graph = _graphAsset.GetGraphs()[index];
+            if (graph is AnimGraph animGraph)
+                CreateNodeGraphView(animGraph.Name);
         });
     }
 
@@ -150,7 +152,7 @@ public class AnimGraphEditor : EditorWindow
 
     private void OnAfterAssemblyReload()
     {
-        Assert.IsNotNull(_graphAsset);
+        Assert.IsNotNull(_graphAsset, "Graph asset is null");
         OpenGraphAsset(_graphAsset);
     }
 
@@ -219,8 +221,11 @@ public class AnimGraphEditor : EditorWindow
                 new Vector2(200, 400), new Vector2(200, 400));
             rootVisualElement.Add(tripleSplitterRowView);
         }
-        
-        currentGraphView = new NodeGraphView(this, _graphAsset.GetAnimGraph(graphName))
+
+        BaseGraph graph = _graphAsset.GetGraph(graphName);
+        if (graph is not AnimGraph animGraph)
+            throw new Exception("Graph is not an AnimGraph");
+        currentGraphView = new NodeGraphView(this, animGraph)
         {
             style = { flexGrow = 1}
         };

@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
+using Moyu.Anim;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
@@ -20,15 +24,27 @@ public class AnimGraphListView : GraphElement
             reorderable = false,
             reorderMode = ListViewReorderMode.Animated,
             selectionType = SelectionType.Single,
-            showAddRemoveFooter = true,
-            itemsSource = _editor.GetGraphAsset().GetAnimGraphs(),
+            showAddRemoveFooter = false,
+            itemsSource = _editor.GetGraphAsset().GetGraphs(),
             showBorder = true,
             makeItem = MakeItem,
             bindItem = BindItem,
         };
         Add(listView);
+        this.AddManipulator(new ContextualMenuManipulator(BuildContextualMenu));
     }
 
+    private void BuildContextualMenu(ContextualMenuPopulateEvent obj)
+    {
+        obj.menu.AppendAction("Add AnimGraph", action =>
+        {
+            AnimGraph animGraph = new();
+            animGraph.Name = "AnimGraph" + _editor.GetGraphAsset().GetGraphs().Count;
+            _editor.GetGraphAsset().GetGraphs().Add(animGraph);
+            listView.RefreshItems();
+        }, DropdownMenuAction.AlwaysEnabled);
+    }
+    
     public void AddOnIndexChangedEvent(OnSelectedDelegate onIndexChangedEvent)
     {
         OnSelectedEvent += onIndexChangedEvent;
@@ -42,12 +58,13 @@ public class AnimGraphListView : GraphElement
     private void BindItem(VisualElement element, int index)
     {
         var textField = (TextField) element;
-        AnimGraph animGraph = _editor.GetGraphAsset().GetAnimGraphs()[index];
-        if (animGraph == null)
-        {
-            animGraph = _editor.GetGraphAsset().GetAnimGraphs()[index] = new AnimGraph();
-            animGraph.Name = "AnimGraph" + index;
-        }
+        BaseGraph animGraph = _editor.GetGraphAsset().GetGraphs()[index];
+        Assert.IsNotNull(animGraph, $"index {index} graph is null");
+        // if (animGraph == null)
+        // {
+        //     animGraph = _editor.GetGraphAsset().GetGraphs()[index] = new AnimGraph();
+        //     animGraph.Name = "AnimGraph" + index;
+        // }
         textField.SetValueWithoutNotify(animGraph.Name);
         textField.SetEnabled(false);
         
@@ -87,36 +104,57 @@ public class AnimGraphListView : GraphElement
 
         textField.RegisterCallback<FocusOutEvent>(EventCallback);
 
-        void Callback1(ChangeEvent<string> evt)
+        void TextFieldValueChanged(ChangeEvent<string> evt)
         {
+            if (evt.newValue == AnimInstance.ROOT_GRAPH_NAME)
+            {
+                Debug.LogError("AnimGraph name can't be " + AnimInstance.ROOT_GRAPH_NAME);
+                return;
+            }
             animGraph.Name = evt.newValue;
         }
-
-        textField.RegisterValueChangedCallback(Callback1);
+        
+        textField.RegisterValueChangedCallback(TextFieldValueChanged);
     }
     
     private static void BuildGraphNameContextualMenu(ContextualMenuPopulateEvent evt, TextField textField)
     {
-        // evt.StopPropagation();
+        evt.StopPropagation();
+        List<DropdownMenuAction> toRemove = new();
         for (int i = 0; i < evt.menu.MenuItems().Count; i++)
         {
-            evt.menu.RemoveItemAt(0);
+            var item = evt.menu.MenuItems()[i];
+            if (item is not DropdownMenuAction action) continue;
+            switch (action.name)
+            {
+                case "Cut":
+                case "Copy":
+                    toRemove.Add(action);
+                    break;
+            }
         }
-        evt.menu.AppendAction("Rename", action =>
+        foreach (var action in toRemove)
         {
-            textField.SetEnabled(true);
-            textField.Focus();
-        }, DropdownMenuAction.AlwaysEnabled);
+            evt.menu.MenuItems().Remove(action);
+        }
+
+        if (textField.value != AnimInstance.ROOT_GRAPH_NAME)
+        {
+            evt.menu.AppendAction("Rename", _ =>
+            {
+                textField.SetEnabled(true);
+                textField.Focus();
+            }, DropdownMenuAction.AlwaysEnabled);
+        }
     }
 
-    private void OnListItemClickTwice(MouseDownEvent evt, int itemIndex)
+    private void OnListItemClickTwice(IMouseEvent evt, int itemIndex)
     {
         // 检查点击次数是否为2，以确定是否是双击
         if (evt.clickCount != 2 || evt.button != (int)PointerEventData.InputButton.Left) return;
         _selectedIndex = itemIndex;
-        listView.Rebuild();
+        listView.RefreshItems();
         OnSelect(itemIndex);
-        // Debug.Log("OnListItemClickTwice: ");
     }
 
     private void OnSelect(int newListIndex)

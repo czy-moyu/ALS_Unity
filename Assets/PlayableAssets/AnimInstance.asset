@@ -12,19 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1566a0966db41b48802b2e9cb0272a1, type: 3}
   m_Name: AnimInstance
   m_EditorClassIdentifier: 
-  animGraphs:
-  - name: RootGraph
-    guid: 73cfa25b-0342-4385-b555-17b4002829d4
-    rootNode:
-      rid: 3591785059890495489
-    nodeWithoutOutput:
-    - rid: 3591785060627644416
-  - name: Anim
-    guid: 6af90781-6415-4065-b039-59f33bd64fea
-    rootNode:
-      rid: 3591785059890495490
-    nodeWithoutOutput:
-    - rid: 3591785060627644417
+  graphs:
+  - rid: 3591785076586184708
   animParams:
     floatParams: []
   references:
@@ -32,78 +21,23 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3591785059890495489
+    - rid: 3591785076586184708
+      type: {class: AnimGraph, ns: , asm: Anim}
+      data:
+        name: RootGraph
+        guid: 024cc52b-db6a-4cfc-8194-8446d67e1bb7
+        rootNode:
+          rid: 3591785076586184709
+        nodeWithoutOutput: []
+    - rid: 3591785076586184709
       type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
       data:
-        guid: e23c1cce-8c9d-4832-96c5-3de81c51510e
+        guid: 57619b94-1598-4501-9ea8-87cdad2d9d25
         graphPosition:
           serializedVersion: 2
           x: 0
           y: 0
-          width: 174.40002
-          height: 76.8
-        inputNode:
-          rid: 3591785059890495491
-    - rid: 3591785059890495490
-      type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        guid: f895d3bf-25b9-41a9-a1c2-94e0d2dd1673
-        graphPosition:
-          serializedVersion: 2
-          x: 0
-          y: 0
-          width: 174.40002
-          height: 76.8
+          width: 0
+          height: 0
         inputNode:
           rid: -2
-    - rid: 3591785059890495491
-      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        guid: 2485e418-b38a-46ad-8d4c-9b97036f8137
-        graphPosition:
-          serializedVersion: 2
-          x: -233.59999
-          y: -24
-          width: 160
-          height: 100.8
-        input1:
-          rid: -2
-        input2:
-          rid: -2
-        isBindParam: 0
-        paramName: 
-        alpha: 0
-    - rid: 3591785060627644416
-      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        guid: 51527bf3-965d-471d-84c2-a414f683277c
-        graphPosition:
-          serializedVersion: 2
-          x: -79.999985
-          y: -154.4
-          width: 159.99998
-          height: 100.799995
-        input1:
-          rid: -2
-        input2:
-          rid: -2
-        isBindParam: 0
-        paramName: 
-        alpha: 0
-    - rid: 3591785060627644417
-      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        guid: a01d6e49-42c5-4f9f-85e3-00f00e9d10bc
-        graphPosition:
-          serializedVersion: 2
-          x: -233.59999
-          y: -42.399998
-          width: 160
-          height: 100.799995
-        input1:
-          rid: -2
-        input2:
-          rid: -2
-        isBindParam: 0
-        paramName: 
-        alpha: 0

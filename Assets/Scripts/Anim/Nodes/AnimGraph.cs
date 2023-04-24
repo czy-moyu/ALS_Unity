@@ -1,28 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Moyu.Anim;
-using UnityEditor;
 using UnityEngine;
-using SGuid = System.Guid;
 
 [Serializable]
-public class AnimGraph
+public class AnimGraph : BaseGraph
 {
-    [SerializeField]
-    [ReadOnly]
-    private string name;
-    
-    public string Name {
-        get => name;
-        set => name = value;
-    }
-    
-    [SerializeField]
-    [ReadOnly]
-    private string guid = SGuid.NewGuid().ToString();
-        
-    public string Guid => guid;
-
     [SerializeReference]
     [ReadOnly]
     private RootPlayableNode rootNode;
