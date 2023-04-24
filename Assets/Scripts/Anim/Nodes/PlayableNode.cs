@@ -8,11 +8,11 @@ namespace Moyu.Anim
     [Serializable]
     public class PlayableNode
     {
-        [SerializeField]
-        [ReadOnly]
-        private string guid = SGuid.NewGuid().ToString();
-        
-        public string Guid => guid;
+        // [SerializeField]
+        // [ReadOnly]
+        // private string guid = SGuid.NewGuid().ToString();
+        //
+        // public string Guid => guid;
         
 #if UNITY_EDITOR
     [SerializeField]
@@ -36,19 +36,5 @@ namespace Moyu.Anim
         {
             
         }
-
-        // public override int GetHashCode()
-        // {
-        //     return guid.GetHashCode();
-        // }
-        //
-        // public override bool Equals(object obj)
-        // {
-        //     if (obj is PlayableNode node)
-        //     {
-        //         return node.guid == guid;
-        //     }
-        //     return false;
-        // }
     }
 }

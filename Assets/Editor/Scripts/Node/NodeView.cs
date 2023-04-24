@@ -11,14 +11,13 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
     private readonly T _node;
     private Port outputPort;
     private readonly List<Port> inputPorts = new ();
-    // protected readonly List<PlayableNode> inputNodes = new ();
     private readonly NodeGraphView graphView;
     
     protected NodeView(T node, int inputPortNum, NodeGraphView graphView)
     {
         this.graphView = graphView;
         _node = node;
-        title = $"{_node.GetType().Name}";
+        base.title = $"{_node.GetType().Name}";
 
         RemoveCollapseButton();
         AddSpacer();

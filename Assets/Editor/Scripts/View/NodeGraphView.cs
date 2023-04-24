@@ -13,7 +13,7 @@ using UnityEngine.UIElements;
 using Edge = UnityEditor.Experimental.GraphView.Edge;
 using MouseButton = UnityEngine.UIElements.MouseButton;
 
-public class NodeGraphView : GraphView,IDropTarget
+public class NodeGraphView : GraphView, IDropTarget
 {
     private readonly AnimGraphEditor _editor;
     private readonly List<INodeView> _nodeViews = new();

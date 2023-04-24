@@ -16,10 +16,10 @@ namespace Moyu.Anim
             set => name = value;
         }
         
-        [SerializeField]
-        [ReadOnly]
-        private string guid = SGuid.NewGuid().ToString();
-        
-        public string Guid => guid;
+        // [SerializeField]
+        // [ReadOnly]
+        // private string guid = SGuid.NewGuid().ToString();
+        //
+        // public string Guid => guid;
     }
 }

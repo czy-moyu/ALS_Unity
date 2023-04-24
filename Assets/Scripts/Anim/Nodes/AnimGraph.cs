@@ -13,7 +13,6 @@ public class AnimGraph : BaseGraph
 #if UNITY_EDITOR
     [SerializeReference]
     [ReadOnly]
-    // [CustomListDrawer]
     private List<PlayableNode> nodeWithoutOutput = new ();
     
     public List<PlayableNode> NodeWithoutOutput
