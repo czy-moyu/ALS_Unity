@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graphs:
   - rid: 3591785076586184708
+  - rid: 3591785080128536576
   animParams:
     floatParams: []
   references:
@@ -28,16 +29,42 @@ MonoBehaviour:
         guid: 024cc52b-db6a-4cfc-8194-8446d67e1bb7
         rootNode:
           rid: 3591785076586184709
-        nodeWithoutOutput: []
+        nodeWithoutOutput:
+        - rid: 3591785082710917120
     - rid: 3591785076586184709
       type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
       data:
         guid: 57619b94-1598-4501-9ea8-87cdad2d9d25
         graphPosition:
           serializedVersion: 2
-          x: 0
-          y: 0
-          width: 0
-          height: 0
+          x: 644
+          y: 212.8
+          width: 174.39996
+          height: 76.79999
         inputNode:
           rid: -2
+    - rid: 3591785080128536576
+      type: {class: AnimGraph, ns: , asm: Anim}
+      data:
+        name: AnimGraph1
+        guid: f07c51f3-f5e3-40bd-a735-a5d9d52b7344
+        rootNode:
+          rid: -2
+        nodeWithoutOutput: []
+    - rid: 3591785082710917120
+      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        guid: 8db77a5a-39d9-4df6-8cbf-c56ac0264daa
+        graphPosition:
+          serializedVersion: 2
+          x: 400
+          y: 176.8
+          width: 160
+          height: 100.79999
+        input1:
+          rid: -2
+        input2:
+          rid: -2
+        isBindParam: 0
+        paramName: 
+        alpha: 0

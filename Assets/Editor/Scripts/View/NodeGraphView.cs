@@ -13,7 +13,7 @@ using UnityEngine.UIElements;
 using Edge = UnityEditor.Experimental.GraphView.Edge;
 using MouseButton = UnityEngine.UIElements.MouseButton;
 
-public class NodeGraphView : GraphView
+public class NodeGraphView : GraphView,IDropTarget
 {
     private readonly AnimGraphEditor _editor;
     private readonly List<INodeView> _nodeViews = new();
@@ -57,9 +57,9 @@ public class NodeGraphView : GraphView
         this.AddManipulator(new ContentDragger());
         // 添加举行选择框
         this.AddManipulator(new RectangleSelector());
+        this.AddManipulator(new SelectionDragger());
 
         CreateBackground();
-
         CreateNodeFromAnimGraphResource();
         CreateNodeWithOutput();
 
@@ -300,5 +300,40 @@ public class NodeGraphView : GraphView
         {
             node.Save();
         }
+    }
+
+    public bool CanAcceptDrop(List<ISelectable> selection)
+    {
+        return true;
+    }
+
+    public bool DragUpdated(DragUpdatedEvent evt, IEnumerable<ISelectable> selection,
+        IDropTarget dropTarget, ISelection dragSource)
+    {
+        return true;
+    }
+
+    public bool DragPerform(DragPerformEvent evt, IEnumerable<ISelectable> selection, 
+        IDropTarget dropTarget, ISelection dragSource)
+    {
+        SaveChanges();
+        return true;
+    }
+
+    public bool DragEnter(DragEnterEvent evt, IEnumerable<ISelectable> selection, 
+        IDropTarget enteredTarget, ISelection dragSource)
+    {
+        return true;
+    }
+
+    public bool DragLeave(DragLeaveEvent evt, IEnumerable<ISelectable> selection, 
+        IDropTarget leftTarget, ISelection dragSource)
+    {
+        return true;
+    }
+
+    public bool DragExited()
+    {
+        return true;
     }
 }

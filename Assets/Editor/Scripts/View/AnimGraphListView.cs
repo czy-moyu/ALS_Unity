@@ -94,7 +94,6 @@ public class AnimGraphListView : GraphElement
         {
             BuildGraphNameContextualMenu(evt, textField);
         }
-
         textField.parent.RegisterCallback<ContextualMenuPopulateEvent>(Callback);
 
         void EventCallback(FocusOutEvent evt)
