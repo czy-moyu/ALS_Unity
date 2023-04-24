@@ -184,18 +184,13 @@ public class AnimGraphEditor : EditorWindow
         toolbar.styleSheets.Add(styleSheet);
 
         // Create the buttons for the toolbar
-        Button saveBtn = CreateCustomToolbarButton("Save", OnSaveToolBarBtnClicked);
+        Button saveBtn = CreateCustomToolbarButton("Todo", null);
 
         // Add buttons to the toolbar
         toolbar.Add(saveBtn);
 
         // Add toolbar to the root visual element
         root.Add(toolbar);
-    }
-
-    private void OnSaveToolBarBtnClicked()
-    {
-        SaveChanges();
     }
 
     public override void SaveChanges()

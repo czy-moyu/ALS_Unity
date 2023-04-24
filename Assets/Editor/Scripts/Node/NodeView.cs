@@ -22,8 +22,14 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
 
         RemoveCollapseButton();
         AddSpacer();
-        SetPosition(node.GraphPosition);
+        base.SetPosition(node.GraphPosition);
         AddInputPort(inputPortNum);
+    }
+
+    public override void SetPosition(Rect newPos)
+    {
+        base.SetPosition(newPos);
+        _node.GraphPosition = newPos;
     }
 
     private void AddSpacer()
@@ -65,6 +71,10 @@ public abstract class NodeView<T> : Node, INodeView where T : PlayableNode
         {
             evt.menu.AppendAction("Delete", (e) =>
             {
+                if (_node.GetType() == typeof(RootPlayableNode))
+                {
+                    return;
+                }
                 graphView.DeleteNode(this);
                 DisConnectOutputEdge();
                 DisConnectAllInputEdge();

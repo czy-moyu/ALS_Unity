@@ -30,17 +30,17 @@ MonoBehaviour:
         rootNode:
           rid: 3591785076586184709
         nodeWithoutOutput:
-        - rid: 3591785082710917120
+        - rid: 3591785082710917129
     - rid: 3591785076586184709
       type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
       data:
         guid: 57619b94-1598-4501-9ea8-87cdad2d9d25
         graphPosition:
           serializedVersion: 2
-          x: 644
-          y: 212.8
-          width: 174.39996
-          height: 76.79999
+          x: 759.2
+          y: 170.4
+          width: 174.40002
+          height: 76.8
         inputNode:
           rid: -2
     - rid: 3591785080128536576
@@ -49,18 +49,31 @@ MonoBehaviour:
         name: AnimGraph1
         guid: f07c51f3-f5e3-40bd-a735-a5d9d52b7344
         rootNode:
-          rid: -2
-        nodeWithoutOutput: []
-    - rid: 3591785082710917120
-      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
+          rid: 3591785082710917121
+        nodeWithoutOutput:
+        - rid: 3591785082710917122
+    - rid: 3591785082710917121
+      type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
       data:
-        guid: 8db77a5a-39d9-4df6-8cbf-c56ac0264daa
+        guid: ccfdabe1-2621-4dc3-ba47-b8e9cddd81fa
         graphPosition:
           serializedVersion: 2
-          x: 400
-          y: 176.8
+          x: 0
+          y: 0
+          width: 174.40002
+          height: 76.8
+        inputNode:
+          rid: -2
+    - rid: 3591785082710917122
+      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        guid: 13d0b834-1ab3-4f1a-841f-2064d16cbc7d
+        graphPosition:
+          serializedVersion: 2
+          x: 14.400024
+          y: -118.399994
           width: 160
-          height: 100.79999
+          height: 100.8
         input1:
           rid: -2
         input2:
@@ -68,3 +81,18 @@ MonoBehaviour:
         isBindParam: 0
         paramName: 
         alpha: 0
+    - rid: 3591785082710917129
+      type: {class: ModifyBoneNode, ns: Moyu.Anim, asm: Anim}
+      data:
+        guid: 5e161ada-5298-4f90-92b8-c5a9dbc44716
+        graphPosition:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 168
+          height: 76.8
+        inputNode:
+          rid: -2
+        boneNames: []
+        blendSpace: 0
+        positionOffset: {x: 0, y: 0, z: 0}

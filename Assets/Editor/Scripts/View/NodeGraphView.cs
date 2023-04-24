@@ -179,6 +179,8 @@ public class NodeGraphView : GraphView,IDropTarget
 
                 if (!GetAnimGraph().NodeWithoutOutput.Contains(nodeView.GetPlayableNode())) 
                     GetAnimGraph().NodeWithoutOutput.Add(nodeView.GetPlayableNode());
+                
+                // SaveChanges();
             }
 
             evt.menu.AppendAction("New " +  pair.Key.Name,  Action, DropdownMenuAction.AlwaysEnabled);
@@ -269,16 +271,13 @@ public class NodeGraphView : GraphView,IDropTarget
         return null;
     }
 
-    public void ConnectNodes(INodeView inputNode, INodeView outputNode, int inputPortIndex)
+    private void ConnectNodes(INodeView inputNode, INodeView outputNode, int inputPortIndex)
     {
         Assert.IsFalse(inputNode == outputNode);
         Port inputPort = outputNode.GetInputPort(inputPortIndex);
         Edge connect = inputNode.GetOutputPort().ConnectTo(inputPort);
         // 将边缘添加到图形视图的边缘集合中
         AddElement(connect);
-        
-        // inputNode.OnOutputPortConnect();
-        // outputNode.OnInputPortConnect(inputPort, node);
     }
 
     private void OnKeyDown(KeyDownEvent evt)
