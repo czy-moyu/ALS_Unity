@@ -13,86 +13,153 @@ MonoBehaviour:
   m_Name: AnimInstance
   m_EditorClassIdentifier: 
   graphs:
-  - rid: 3591785076586184708
-  - rid: 3591785080128536576
+  - rid: 4338683312162996387
+  - rid: 4338683312162996388
+  - rid: 4338683312162996397
   animParams:
-    floatParams: []
+    allParams:
+    - rid: 4338683312162996389
+    - rid: 4338683312162996390
+    - rid: 4338683312162996391
+    - rid: 4338683312162996392
+    - rid: 4338683312162996393
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 3591785076586184708
-      type: {class: AnimGraph, ns: , asm: Anim}
+    - rid: 4338683312162996387
+      type: {class: AnimGraph, ns: , asm: Als}
       data:
         name: RootGraph
-        guid: 024cc52b-db6a-4cfc-8194-8446d67e1bb7
+        guid: d20f0784-df21-46ca-96c3-ce5c0b50b54b
         rootNode:
-          rid: 3591785076586184709
-        nodeWithoutOutput:
-        - rid: 3591785082710917129
-    - rid: 3591785076586184709
-      type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
+          rid: 4338683312162996394
+        nodeWithoutOutput: []
+    - rid: 4338683312162996388
+      type: {class: StateMachine, ns: Moyu.Anim, asm: Als}
       data:
-        guid: 57619b94-1598-4501-9ea8-87cdad2d9d25
-        graphPosition:
-          serializedVersion: 2
-          x: 759.2
-          y: 170.4
-          width: 174.40002
-          height: 76.8
-        inputNode:
-          rid: -2
-    - rid: 3591785080128536576
-      type: {class: AnimGraph, ns: , asm: Anim}
+        name: StateMachine1
+        guid: e10392b9-08bb-435d-955f-f628805cdc19
+        entryNode:
+          rid: 4338683312162996395
+        stateNodes:
+        - rid: 4338683312162996398
+    - rid: 4338683312162996389
+      type: {class: 'AnimControllerParamsPair`1[[System.Boolean, mscorlib]]', ns: ,
+        asm: Als}
       data:
-        name: AnimGraph1
-        guid: f07c51f3-f5e3-40bd-a735-a5d9d52b7344
-        rootNode:
-          rid: 3591785082710917121
-        nodeWithoutOutput:
-        - rid: 3591785082710917122
-    - rid: 3591785082710917121
-      type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Anim}
+        name: bool
+        value: 0
+    - rid: 4338683312162996390
+      type: {class: 'AnimControllerParamsPair`1[[System.Single, mscorlib]]', ns: ,
+        asm: Als}
       data:
-        guid: ccfdabe1-2621-4dc3-ba47-b8e9cddd81fa
+        name: float
+        value: 0
+    - rid: 4338683312162996391
+      type: {class: 'AnimControllerParamsPair`1[[UnityEngine.Vector2, UnityEngine.CoreModule]]',
+        ns: , asm: Als}
+      data:
+        name: vector2
+        value: {x: 0, y: 0}
+    - rid: 4338683312162996392
+      type: {class: 'AnimControllerParamsPair`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]',
+        ns: , asm: Als}
+      data:
+        name: vector3
+        value: {x: 0, y: 0, z: 0}
+    - rid: 4338683312162996393
+      type: {class: 'AnimControllerParamsPair`1[[UnityEngine.Object, UnityEngine.CoreModule]]',
+        ns: , asm: Als}
+      data:
+        name: object
+        value: {fileID: 0}
+    - rid: 4338683312162996394
+      type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Als}
+      data:
         graphPosition:
           serializedVersion: 2
           x: 0
           y: 0
-          width: 174.40002
+          width: 173.6
           height: 76.8
         inputNode:
-          rid: -2
-    - rid: 3591785082710917122
-      type: {class: AnimBlendNode, ns: Moyu.Anim, asm: Anim}
+          rid: 4338683312162996396
+    - rid: 4338683312162996395
+      type: {class: EntryStateNode, ns: Moyu.Anim, asm: Als}
       data:
-        guid: 13d0b834-1ab3-4f1a-841f-2064d16cbc7d
-        graphPosition:
-          serializedVersion: 2
-          x: 14.400024
-          y: -118.399994
-          width: 160
-          height: 100.8
-        input1:
-          rid: -2
-        input2:
-          rid: -2
-        isBindParam: 0
-        paramName: 
-        alpha: 0
-    - rid: 3591785082710917129
-      type: {class: ModifyBoneNode, ns: Moyu.Anim, asm: Anim}
-      data:
-        guid: 5e161ada-5298-4f90-92b8-c5a9dbc44716
         graphPosition:
           serializedVersion: 2
           x: 0
           y: 0
-          width: 168
+          width: 0
+          height: 0
+        guid: 782fa017-2672-48c9-bb6e-1920d9cf6472
+        nodeName: Entry
+        outputNodes:
+        - graphPosition:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          guid: 69da58bc-e0b3-4012-ba5b-acdbef98d6ae
+          nodeName: State node
+          graphGuid: a2f248a4-8f90-4fda-af56-b026324e7582
+          outputNodes: []
+    - rid: 4338683312162996396
+      type: {class: StateMachineNode, ns: Moyu.Anim, asm: Als}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: -203.99998
+          y: -80
+          width: 178.40001
+          height: 76.8
+        stateMachine:
+          rid: 4338683312162996388
+    - rid: 4338683312162996397
+      type: {class: StateAnimGraph, ns: Moyu.Anim, asm: Als}
+      data:
+        name: State node
+        guid: a2f248a4-8f90-4fda-af56-b026324e7582
+        rootNode:
+          rid: 4338683312162996399
+        nodeWithoutOutput: []
+    - rid: 4338683312162996398
+      type: {class: StateNode, ns: Moyu.Anim, asm: Als}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        guid: 69da58bc-e0b3-4012-ba5b-acdbef98d6ae
+        nodeName: State node
+        graphGuid: a2f248a4-8f90-4fda-af56-b026324e7582
+        outputNodes: []
+    - rid: 4338683312162996399
+      type: {class: RootPlayableNode, ns: Moyu.Anim, asm: Als}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 173.6
           height: 76.8
         inputNode:
-          rid: -2
-        boneNames: []
-        blendSpace: 0
-        positionOffset: {x: 0, y: 0, z: 0}
+          rid: 4338683312162996400
+    - rid: 4338683312162996400
+      type: {class: AnimClipNode, ns: Moyu.Anim, asm: Als}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: -175.99998
+          y: -85.6
+          width: 150.40001
+          height: 76.8
+        _clip: {fileID: 8993902097722301239, guid: aedb3f3ef3164ba4d8338722404c599a,
+          type: 3}
+        speed: 1
+        isSingleFrame: 0
+        singleFrameTime: 0
